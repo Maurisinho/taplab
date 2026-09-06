@@ -16,14 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname)));
 
-// Database File Path
-const DB_PATH = path.join(__dirname, 'data', 'db.json');
-
-// Ensure data folder exists
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-  fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
-}
-
 // Initial Mock Data
 const INITIAL_DATA = {
   orders: [
@@ -116,23 +108,15 @@ const INITIAL_DATA = {
   ]
 };
 
-// Helper: Read DB
+// In-Memory Database with Safe Fallback
+let inMemoryDB = JSON.parse(JSON.stringify(INITIAL_DATA));
+
 function getDB() {
-  if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2));
-    return INITIAL_DATA;
-  }
-  try {
-    const raw = fs.readFileSync(DB_PATH, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    return INITIAL_DATA;
-  }
+  return inMemoryDB;
 }
 
-// Helper: Save DB
 function saveDB(data) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  inMemoryDB = data;
 }
 
 // --------------------------------------------------------------------------
@@ -190,7 +174,6 @@ app.post('/api/orders', (req, res) => {
 
   db.orders.unshift(newOrder);
 
-  // Update or insert customer
   const cust = db.customers.find(c => c.phone === newOrder.clientPhone);
   if (!cust) {
     db.customers.push({
@@ -266,12 +249,12 @@ app.get('/crm', (req, res) => {
   res.sendFile(path.join(__dirname, 'crm.html'));
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`  🚀 Servidor TAPLAB corriendo con éxito`);
-  console.log(`  🌐 Tienda Pública: http://localhost:${PORT}`);
-  console.log(`  🔒 CRM Privado:    http://localhost:${PORT}/crm.html`);
-  console.log(`  🔑 PIN de Acceso:   ${ADMIN_PIN}`);
-  console.log(`=========================================`);
-});
+// Standalone Server Start (for local & container execution)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor TAPLAB corriendo en http://localhost:${PORT}`);
+  });
+}
+
+// Export app for Vercel Serverless Function
+module.exports = app;
