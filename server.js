@@ -249,6 +249,10 @@ app.get('/crm', (req, res) => {
   res.sendFile(path.join(__dirname, 'crm.html'));
 });
 
+app.get('/finance', (req, res) => {
+  res.sendFile(path.join(__dirname, 'finance.html'));
+});
+
 // Standalone Server Start (for local & container execution)
 if (require.main === module) {
   app.listen(PORT, () => {
