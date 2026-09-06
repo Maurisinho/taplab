@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAPLAB — Objetos cotidianos. Experiencias inteligentes.</title>
+  <meta name="description" content="TAPLAB transforma objetos simples y cotidianos en productos inteligentes mediante tecnología accesible como NFC, códigos QR y personalización digital.">
+  
+  <link rel="icon" type="image/png" href="assets/images/isotype-dark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- SITE HEADER / NAVBAR -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#" class="brand-logo-link" title="TAPLAB">
+        <img src="assets/images/logo-light-bg.png" alt="tap lab" class="brand-logo-img">
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#concepto" class="nav-link">Concepto</a></li>
+          <li><a href="#productos" class="nav-link">Productos</a></li>
+          <li><a href="#demo" class="nav-link">Demo Interactiva</a></li>
+          <li><a href="#negocios" class="nav-link">Para Negocios</a></li>
+          <li><a href="#como-funciona" class="nav-link">¿Cómo Funciona?</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-icon" id="cart-toggle-btn" aria-label="Ver carrito">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+
+        <a href="#productos" class="btn btn-primary btn-sm">Pedir Ahora</a>
+
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menú móvil">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <div class="badge-pill">
+              <span class="badge-dot"></span>
+              Objetos cotidianos · Experiencias inteligentes
+            </div>
+          </div>
+          <h1 class="hero-title">
+            Haz que los objetos <span class="highlight">hagan más.</span>
+          </h1>
+          <p class="hero-description">
+            Transformamos objetos simples en productos inteligentes mediante tecnología accesible como <strong>NFC</strong>, <strong>códigos QR</strong> y <strong>personalización digital</strong>.
+          </p>
+          <div class="hero-ctas">
+            <a href="#productos" class="btn btn-primary">Explorar Productos</a>
+            <a href="#demo" class="btn btn-outline">Probar Demo Interactiva</a>
+          </div>
+          <div class="hero-features-list">
+            <div class="feature-item-mini">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Sin aplicaciones requeridas
+            </div>
+            <div class="feature-item-mini">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Compatible con iOS y Android
+            </div>
+            <div class="feature-item-mini">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Configuración en segundos
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card-showcase">
+            <div class="card-top">
+              <div class="chip-graphic">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                  <rect x="9" y="9" width="6" height="6"></rect>
+                </svg>
+              </div>
+              <div class="nfc-waves">
+                <div class="nfc-ring">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-middle">
+              <div class="card-holder-name">TAP CARD PRO</div>
+              <div class="card-holder-role">Conexión Instantánea NFC + QR</div>
+            </div>
+
+            <div class="card-bottom">
+              <img src="assets/images/logo-dark-bg.png" alt="tap lab" style="height: 28px; width: auto;">
+              <span style="font-size: 11px; color: var(--copper-light); font-weight: 600; letter-spacing: 0.05em;">SMART OBJECT</span>
+            </div>
+          </div>
+
+          <div class="floating-action-badge">
+            <span style="font-size: 20px;">⚡</span>
+            <div>
+              <div style="font-size: 12px; color: var(--slate-text);">1 Toque con tu teléfono</div>
+              <div style="font-weight: 700; color: var(--graphite-ink);">Comparte todo tu mundo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCEPT SECTION -->
+  <section class="section" id="concepto">
+    <div class="container">
+      <div class="concept-box">
+        <div class="section-header">
+          <span class="section-tag">Nuestra Filosofía</span>
+          <h2 class="section-title">¿Qué es TAPLAB?</h2>
+          <p class="section-subtitle">
+            No vendemos tecnología complicada. Vendemos objetos que hacen algo inesperado: un llavero que comparte tu contacto, una tarjeta que reemplaza cientos de papeles, o una placa que llena tu negocio de reseñas.
+          </p>
+        </div>
+
+        <div class="formula-grid">
+          <div class="formula-node">Objeto simple</div>
+          <div class="formula-operator">+</div>
+          <div class="formula-node">Tecnología NFC/QR</div>
+          <div class="formula-operator">+</div>
+          <div class="formula-node">Diseño físico</div>
+          <div class="formula-operator">=</div>
+          <div class="formula-node highlight">Producto Inteligente</div>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+            <h3 class="pillar-title">Cero Aplicaciones</h3>
+            <p class="pillar-desc">Cualquier persona puede tocar o escanear sin necesidad de descargar apps adicionales.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+            <h3 class="pillar-title">100% Compatible</h3>
+            <p class="pillar-desc">Funciona nativamente con iPhone y Android a través de NFC y códigos QR de respaldo.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </div>
+            <h3 class="pillar-title">Personalización Total</h3>
+            <p class="pillar-desc">Diseños a medida con tu logotipo, colores, redes, menús o información médica.</p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <h3 class="pillar-title">Actualización Instantánea</h3>
+            <p class="pillar-desc">Cambia tus enlaces e información en cualquier momento sin tener que reimprimir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SIMULATOR SECTION -->
+  <section class="section section-dark" id="demo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Experiencia en Vivo</span>
+        <h2 class="section-title">Experimenta el efecto "Tap"</h2>
+        <p class="section-subtitle">Selecciona uno de nuestros productos inteligentes y mira lo que ve el usuario en su pantalla en una fracción de segundo.</p>
+      </div>
+
+      <div class="simulator-wrapper">
+        <div class="simulator-controls">
+          <h3>Elige un producto para probar:</h3>
+          <p>Haz clic en cualquier opción para simular la interacción real con un smartphone:</p>
+          
+          <div class="sim-picker">
+            <button class="sim-item-btn active" data-sim="tap-card">
+              <span>🪪 01 — TAP CARD</span>
+              <span class="tag">Identidad Digital</span>
+            </button>
+            <button class="sim-item-btn" data-sim="review-tap">
+              <span>⭐ 02 — REVIEW TAP</span>
+              <span class="tag">Google 5 Estrellas</span>
+            </button>
+            <button class="sim-item-btn" data-sim="wifi-tap">
+              <span>📶 03 — WIFI TAP</span>
+              <span class="tag">Conexión 1 Clic</span>
+            </button>
+            <button class="sim-item-btn" data-sim="pet-tag">
+              <span>🐾 04 — PET TAG</span>
+              <span class="tag">Mascota Segura</span>
+            </button>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.06); padding: 18px; border-radius: var(--radius-md); border-left: 3px solid var(--copper-signal);">
+            <p style="font-size: 13px; color: #D1D5DB; margin: 0;">
+              💡 <strong>Tip Pro:</strong> El 95% de los teléfonos modernos leen el chip NFC automáticamente sin abrir ninguna app.
+            </p>
+          </div>
+        </div>
+
+        <div class="phone-mockup-frame">
+          <div class="phone-speaker"></div>
+          <div class="phone-screen" id="simulator-screen-target"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS CATALOG -->
+  <section class="section" id="productos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Catálogo Oficial</span>
+        <h2 class="section-title">Nuestra Colección de Objetos Inteligentes</h2>
+        <p class="section-subtitle">Diseñados con precisión, tecnología integrada y materiales de primera calidad.</p>
+      </div>
+
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">Todos los Productos</button>
+        <button class="filter-btn" onclick="filterProducts('featured', this)">⭐ Protagonistas</button>
+        <button class="filter-btn" onclick="filterProducts('business', this)">Negocios (B2B)</button>
+        <button class="filter-btn" onclick="filterProducts('personal', this)">Personales & Mascotas</button>
+      </div>
+
+      <div class="products-grid" id="products-grid"></div>
+    </div>
+  </section>
+
+  <!-- TAP FOR BUSINESS -->
+  <section class="section" id="negocios" style="background-color: #FAF8F5;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Soluciones Comerciales</span>
+        <h2 class="section-title">TAP FOR BUSINESS</h2>
+        <p class="section-subtitle">
+          Vendes soluciones inteligentes para elevar la facturación, reputación y experiencia de clientes en tu negocio.
+        </p>
+      </div>
+
+      <div class="business-card-grid">
+        <div class="business-plan-card">
+          <h3 class="plan-name">Business Review Kit</h3>
+          <p class="plan-desc">Convierte cada visita satisfecha en una reseña de 5 estrellas en tiempo real.</p>
+          <div class="plan-price-row">
+            <span style="font-size: 14px; color: var(--slate-text);">Inversión Única</span>
+            <div class="plan-price"><span style="color: var(--copper-signal); font-size: 24px;">L</span> 650</div>
+          </div>
+          <ul class="plan-items-list">
+            <li class="plan-item">✓ 1x Placa Review TAP Acrílica Premium</li>
+            <li class="plan-item">✓ Chip NFC + Código QR permanente</li>
+            <li class="plan-item">✓ Personalización con el Logo de tu Empresa</li>
+            <li class="plan-item">✓ Enlace directo a Google Reviews</li>
+          </ul>
+          <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="addBusinessKit('biz-review-kit')">
+            + Agregar Kit al Pedido
+          </button>
+        </div>
+
+        <div class="business-plan-card premium-kit">
+          <div class="plan-badge">MÁS POPULAR</div>
+          <h3 class="plan-name">Business Starter Kit</h3>
+          <p class="plan-desc">El kit integral para digitalizar mostrador, red WiFi y tarjeta ejecutiva.</p>
+          <div class="plan-price-row">
+            <span style="font-size: 14px; color: var(--slate-text);">Paquete Completo</span>
+            <div class="plan-price"><span style="color: var(--copper-signal); font-size: 24px;">L</span> 1,200</div>
+          </div>
+          <ul class="plan-items-list">
+            <li class="plan-item">✓ 1x Review TAP para mostrador</li>
+            <li class="plan-item">✓ 1x WiFi TAP para conectar clientes</li>
+            <li class="plan-item">✓ 1x TAP CARD ejecutiva de presentación</li>
+            <li class="plan-item">✓ Configuración digital y soporte incluido</li>
+          </ul>
+          <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="addBusinessKit('biz-starter-kit')">
+            + Agregar Starter Kit Completo
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="como-funciona">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Paso a Paso</span>
+        <h2 class="section-title">¿Cómo funciona?</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01 — ELIGE</div>
+          <h3 class="step-title">Elige tu objeto</h3>
+          <p class="step-desc">Selecciona la tarjeta, placa, llavero o identificación que mejor se adapte a tu meta.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02 — PERSONALIZA</div>
+          <h3 class="step-title">Personaliza tus datos</h3>
+          <p class="step-desc">Agrega tu logo, redes sociales, menú, contacto, red WiFi o perfil médico.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03 — TAP</div>
+          <h3 class="step-title">Haz Tap o Escanea</h3>
+          <p class="step-desc">Acerca cualquier smartphone al objeto inteligente o escanea el código QR.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04 — CONNECT</div>
+          <h3 class="step-title">Conecta al instante</h3>
+          <p class="step-desc">Accede directamente a la experiencia digital sin descargar ninguna app.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-dark" style="text-align: center;">
+    <div class="container" style="max-width: 800px;">
+      <h2 style="font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 700; margin-bottom: 20px;">
+        El futuro está en los objetos que ya usamos.
+      </h2>
+      <p style="font-size: 19px; color: var(--copper-light); margin-bottom: 36px;">
+        TAPLAB · Smart objects for everyday life.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="#productos" class="btn btn-primary" style="padding: 14px 32px;">Comenzar Pedido</a>
+        <button class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="checkoutWhatsApp()">
+          Contactar por WhatsApp
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer-overlay" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <div class="cart-title">Tu Pedido TAPLAB</div>
+      <button class="close-cart-btn" id="close-cart-btn">✕</button>
+    </div>
+    <div class="cart-items-container" id="cart-items-container"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total Estimado:</span>
+        <span class="cart-total-amount" id="cart-total-display">L 0</span>
+      </div>
+      <button class="btn btn-primary" style="width: 100%; padding: 14px;" onclick="checkoutWhatsApp()">
+        <span>Pedir por WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="assets/images/logo-dark-bg.png" alt="tap lab" style="height: 36px; width: auto;">
+          <p>Diseñamos productos físicos que combinan tecnología, personalización y experiencias digitales para la vida cotidiana.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Productos</h4>
+          <ul class="footer-links">
+            <li><a href="#productos">TAP CARD</a></li>
+            <li><a href="#productos">REVIEW TAP</a></li>
+            <li><a href="#productos">WIFI TAP</a></li>
+            <li><a href="#productos">PET TAG</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Soluciones</h4>
+          <ul class="footer-links">
+            <li><a href="#negocios">Para Restaurantes</a></li>
+            <li><a href="#negocios">Business Review Kit</a></li>
+            <li><a href="#negocios">Business Starter Kit</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Atención</h4>
+          <p style="color: #9CA3AF; font-size: 14px; margin-bottom: 14px;">¿Necesitas asesoría o pedidos al por mayor para tu empresa?</p>
+          <button class="btn btn-primary btn-sm" onclick="checkoutWhatsApp()">
+            Escribir por WhatsApp
+          </button>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 TAPLAB. Todos los derechos reservados.</div>
+        <div>Objetos cotidianos. Experiencias inteligentes.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
