@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCartListeners();
   setupSmoothScroll();
   setupMobileMenu();
+  setupSecretAdminShortcuts();
 });
 
 function renderProducts(filter = 'all') {
@@ -494,5 +495,35 @@ function setupSmoothScroll() {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
+  });
+}
+
+// SECRET ADMIN ACCESS SHORTCUTS
+function setupSecretAdminShortcuts() {
+  let clickCount = 0;
+  let clickTimer;
+
+  const handleAdminTrigger = () => {
+    window.location.href = 'crm.html';
+  };
+
+  // 1. Triple click on brand logos
+  document.querySelectorAll('.brand-logo-link, .footer-brand img').forEach(logo => {
+    logo.addEventListener('click', (e) => {
+      clickCount++;
+      clearTimeout(clickTimer);
+      if (clickCount >= 3) {
+        e.preventDefault();
+        handleAdminTrigger();
+      }
+      clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+    });
+  });
+
+  // 2. Keyboard shortcut: Ctrl + Shift + A
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      handleAdminTrigger();
+    }
   });
 }

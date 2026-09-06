@@ -1,9 +1,8 @@
 /* ==========================================================================
    TAPLAB CRM & OPERATIONS SUITE — JAVASCRIPT LOGIC
-   Private Auth with Master PIN, PWA Install & Full Operations Control
+   Private Auth with Master PIN, PWA Install & API / LocalStorage Sync
    ========================================================================== */
 
-// MASTER PIN AUTHENTICATION
 const DEFAULT_PIN = '1234';
 let storedPin = localStorage.getItem('taplab_master_pin') || DEFAULT_PIN;
 
@@ -38,24 +37,46 @@ function handlePinInput() {
   });
 }
 
-function verifyPin() {
+async function verifyPin() {
   const digits = document.querySelectorAll('.pin-digit');
   let enteredPin = '';
   digits.forEach(d => enteredPin += d.value);
 
   const errorMsg = document.getElementById('lock-error');
 
+  // Check local or remote API
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin: enteredPin })
+    });
+    const data = await res.json();
+    if (data.success) {
+      grantAccess();
+      return;
+    }
+  } catch (err) {
+    // Local fallback
+  }
+
   if (enteredPin === storedPin) {
-    sessionStorage.setItem('taplab_crm_auth', 'true');
-    const lockScreen = document.getElementById('lock-screen');
-    if (lockScreen) lockScreen.classList.add('unlocked');
-    if (errorMsg) errorMsg.style.display = 'none';
-    digits.forEach(d => d.value = '');
+    grantAccess();
   } else {
     if (errorMsg) errorMsg.style.display = 'block';
     digits.forEach(d => d.value = '');
     digits[0].focus();
   }
+}
+
+function grantAccess() {
+  sessionStorage.setItem('taplab_crm_auth', 'true');
+  const lockScreen = document.getElementById('lock-screen');
+  const errorMsg = document.getElementById('lock-error');
+  if (lockScreen) lockScreen.classList.add('unlocked');
+  if (errorMsg) errorMsg.style.display = 'none';
+  document.querySelectorAll('.pin-digit').forEach(d => d.value = '');
+  loadDataFromAPI();
 }
 
 window.lockCRM = function() {
@@ -168,7 +189,25 @@ function saveState() {
   localStorage.setItem('taplab_crm_inventory', JSON.stringify(crmInventory));
 }
 
-// PWA Install handler
+async function loadDataFromAPI() {
+  try {
+    const resOrders = await fetch('/api/orders');
+    if (resOrders.ok) {
+      const data = await resOrders.json();
+      if (Array.isArray(data) && data.length > 0) {
+        crmOrders = data;
+        saveState();
+      }
+    }
+  } catch (err) {}
+
+  renderDashboard();
+  renderKanban();
+  renderOrdersTable();
+  renderCustomersTable();
+  renderInventoryTable();
+}
+
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
@@ -188,13 +227,12 @@ window.installApp = function() {
       deferredPrompt = null;
     });
   } else {
-    alert('Para instalar en iPhone: Toca el botón Compartir y selecciona "Añadir a la pantalla de inicio". En Android: Menú de Chrome -> "Instalar aplicación".');
+    alert('Para instalar en iPhone: Toca "Compartir" y luego "Añadir a la pantalla de inicio". En Android: Menú de Chrome -> "Instalar aplicación".');
   }
 };
 
-// Register Service Worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(err => console.log('SW register error', err));
+  navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -241,7 +279,7 @@ function renderDashboard() {
   document.getElementById('metric-revenue').textContent = `L ${totalRevenue.toLocaleString()}`;
   document.getElementById('metric-active-orders').textContent = activeOrders;
   document.getElementById('metric-clients').textContent = totalClients;
-  document.getElementById('metric-b2b-ratio').textContent = `${Math.round((b2bOrders / crmOrders.length) * 100)}% B2B`;
+  document.getElementById('metric-b2b-ratio').textContent = `${Math.round((b2bOrders / (crmOrders.length || 1)) * 100)}% B2B`;
 
   const recentContainer = document.getElementById('dashboard-recent-orders');
   if (recentContainer) {

@@ -1,0 +1,210 @@
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+const ADMIN_PIN = process.env.ADMIN_PIN || '1234';
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Initial Mock Data
+let inMemoryDB = {
+  orders: [
+    {
+      id: 'TL-1082',
+      clientName: 'Restaurante La Cumbre',
+      clientPhone: '50498765432',
+      clientEmail: 'gerencia@lacumbre.hn',
+      clientType: 'B2B',
+      product: 'Review TAP (Acrílico Stand)',
+      variant: 'Stand Premium con Logo',
+      qty: 3,
+      total: 1950,
+      status: 'production',
+      date: '2026-09-05',
+      notes: 'Grabar logotipo en dorado. Enlazar a Google Maps ID: g.page/lacumbre'
+    },
+    {
+      id: 'TL-1083',
+      clientName: 'Dra. Sofía Martínez',
+      clientPhone: '50495123456',
+      clientEmail: 'sofia.martinez@clinica.hn',
+      clientType: 'B2B',
+      product: 'TAP CARD Pro',
+      variant: 'Custom Metal',
+      qty: 1,
+      total: 500,
+      status: 'design',
+      date: '2026-09-06',
+      notes: 'Diseño minimalista con logo de odontología y enlace vCard.'
+    },
+    {
+      id: 'TL-1084',
+      clientName: 'Carlos Mendizábal',
+      clientPhone: '50499887766',
+      clientEmail: 'carlos.m@gmail.com',
+      clientType: 'B2C',
+      product: 'PET TAG Smart Collar',
+      variant: 'Custom Collar Tag',
+      qty: 2,
+      total: 800,
+      status: 'new',
+      date: '2026-09-06',
+      notes: 'Nombres de mascotas: "Toby" y "Luna". Teléfono grabado al reverso.'
+    },
+    {
+      id: 'TL-1085',
+      clientName: 'The Barber Club',
+      clientPhone: '50494443322',
+      clientEmail: 'info@barberclub.hn',
+      clientType: 'B2B',
+      product: 'Business Starter Kit',
+      variant: 'Kit Completo (Review + WiFi + Card)',
+      qty: 1,
+      total: 1200,
+      status: 'shipping',
+      date: '2026-09-04',
+      notes: 'Configurar red WiFi "Barber_VIP" y tarjeta para el administrador.'
+    },
+    {
+      id: 'TL-1086',
+      clientName: 'Mariana Pineda',
+      clientPhone: '50497771122',
+      clientEmail: 'mariana.photo@studio.hn',
+      clientType: 'B2C',
+      product: 'SMART KEY',
+      variant: 'Custom Key',
+      qty: 1,
+      total: 280,
+      status: 'completed',
+      date: '2026-09-02',
+      notes: 'Enlace a Instagram @mariana_photos.'
+    }
+  ],
+  customers: [
+    { id: 'CUST-01', name: 'Restaurante La Cumbre', type: 'B2B', phone: '50498765432', email: 'gerencia@lacumbre.hn', city: 'Tegucigalpa', ordersCount: 2, totalSpent: 3150 },
+    { id: 'CUST-02', name: 'Dra. Sofía Martínez', type: 'B2B', phone: '50495123456', email: 'sofia.martinez@clinica.hn', city: 'San Pedro Sula', ordersCount: 1, totalSpent: 500 },
+    { id: 'CUST-03', name: 'Carlos Mendizábal', type: 'B2C', phone: '50499887766', email: 'carlos.m@gmail.com', city: 'Tegucigalpa', ordersCount: 1, totalSpent: 800 },
+    { id: 'CUST-04', name: 'The Barber Club', type: 'B2B', phone: '50494443322', email: 'info@barberclub.hn', city: 'San Pedro Sula', ordersCount: 1, totalSpent: 1200 },
+    { id: 'CUST-05', name: 'Mariana Pineda', type: 'B2C', phone: '50497771122', email: 'mariana.photo@studio.hn', city: 'La Ceiba', ordersCount: 1, totalSpent: 280 }
+  ],
+  inventory: [
+    { id: 'INV-01', item: 'Chips NFC NTAG213 (Adhesivos)', category: 'Componentes', stock: 240, minStock: 50, cost: 8 },
+    { id: 'INV-02', item: 'Chips NFC NTAG215 (Alta Capacidad)', category: 'Componentes', stock: 110, minStock: 30, cost: 12 },
+    { id: 'INV-03', item: 'Tarjetas PVC Mate en Blanco', category: 'Soportes', stock: 65, minStock: 25, cost: 35 },
+    { id: 'INV-04', item: 'Tarjetas Metálicas Negras', category: 'Soportes', stock: 22, minStock: 15, cost: 95 },
+    { id: 'INV-05', item: 'Stands Acrílicos Review TAP', category: 'Soportes B2B', stock: 48, minStock: 20, cost: 80 },
+    { id: 'INV-06', item: 'Placas Metálicas Pet Tag', category: 'Accesorios', stock: 85, minStock: 30, cost: 40 },
+    { id: 'INV-07', item: 'Llaveros Inteligentes de Cuero/Epoxi', category: 'Accesorios', stock: 52, minStock: 20, cost: 45 }
+  ]
+};
+
+// 1. Auth Endpoint
+app.post('/api/auth/login', (req, res) => {
+  const { pin } = req.body;
+  if (pin === ADMIN_PIN) {
+    res.json({ success: true, message: 'Autenticación exitosa', token: 'taplab-session-valid' });
+  } else {
+    res.status(401).json({ success: false, message: 'PIN incorrecto' });
+  }
+});
+
+// 2. Metrics Endpoint
+app.get('/api/metrics', (req, res) => {
+  const totalRevenue = inMemoryDB.orders.reduce((sum, ord) => sum + ord.total, 0);
+  const activeOrders = inMemoryDB.orders.filter(ord => ord.status !== 'completed').length;
+  const totalClients = inMemoryDB.customers.length;
+  const b2bOrders = inMemoryDB.orders.filter(ord => ord.clientType === 'B2B').length;
+
+  res.json({
+    totalRevenue,
+    activeOrders,
+    totalClients,
+    b2bRatio: inMemoryDB.orders.length ? Math.round((b2bOrders / inMemoryDB.orders.length) * 100) : 0
+  });
+});
+
+// 3. Orders Endpoints
+app.get('/api/orders', (req, res) => {
+  res.json(inMemoryDB.orders);
+});
+
+app.post('/api/orders', (req, res) => {
+  const newOrder = {
+    id: `TL-${inMemoryDB.orders.length + 1083}`,
+    clientName: req.body.clientName || 'Cliente TAPLAB',
+    clientPhone: req.body.clientPhone || '',
+    clientEmail: req.body.clientEmail || '',
+    clientType: req.body.clientType || 'B2C',
+    product: req.body.product || 'TAP CARD',
+    variant: req.body.variant || 'Estándar',
+    qty: Number(req.body.qty) || 1,
+    total: Number(req.body.total) || 350,
+    status: 'new',
+    date: new Date().toISOString().split('T')[0],
+    notes: req.body.notes || ''
+  };
+
+  inMemoryDB.orders.unshift(newOrder);
+
+  const cust = inMemoryDB.customers.find(c => c.phone === newOrder.clientPhone);
+  if (!cust) {
+    inMemoryDB.customers.push({
+      id: `CUST-0${inMemoryDB.customers.length + 1}`,
+      name: newOrder.clientName,
+      type: newOrder.clientType,
+      phone: newOrder.clientPhone,
+      email: newOrder.clientEmail,
+      city: 'Honduras',
+      ordersCount: 1,
+      totalSpent: newOrder.total
+    });
+  } else {
+    cust.ordersCount += 1;
+    cust.totalSpent += newOrder.total;
+  }
+
+  res.status(201).json(newOrder);
+});
+
+app.put('/api/orders/:id', (req, res) => {
+  const orderIndex = inMemoryDB.orders.findIndex(o => o.id === req.params.id);
+  if (orderIndex === -1) {
+    return res.status(404).json({ error: 'Pedido no encontrado' });
+  }
+
+  inMemoryDB.orders[orderIndex] = {
+    ...inMemoryDB.orders[orderIndex],
+    ...req.body
+  };
+
+  res.json(inMemoryDB.orders[orderIndex]);
+});
+
+// 4. Customers Endpoints
+app.get('/api/customers', (req, res) => {
+  res.json(inMemoryDB.customers);
+});
+
+// 5. Inventory Endpoints
+app.get('/api/inventory', (req, res) => {
+  res.json(inMemoryDB.inventory);
+});
+
+app.put('/api/inventory/:id', (req, res) => {
+  const item = inMemoryDB.inventory.find(i => i.id === req.params.id);
+  if (!item) {
+    return res.status(404).json({ error: 'Insumo no encontrado' });
+  }
+
+  if (typeof req.body.delta === 'number') {
+    item.stock = Math.max(0, item.stock + req.body.delta);
+  } else if (typeof req.body.stock === 'number') {
+    item.stock = Math.max(0, req.body.stock);
+  }
+
+  res.json(item);
+});
+
+module.exports = app;
