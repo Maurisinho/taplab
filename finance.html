@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TAPLAB Finance — Control Financiero</title>
+  
+  <!-- iOS & PWA Native App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TAPLAB Finance">
+  <link rel="apple-touch-icon" href="assets/images/isotype-dark.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#171A1F">
+  
+  <link rel="icon" type="image/png" href="assets/images/isotype-dark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --graphite-ink: #171A1F;
+      --graphite-card: #20242C;
+      --graphite-border: #2D323E;
+      --copper-signal: #C1793B;
+      --copper-light: #E3A868;
+      --copper-subtle: rgba(193, 121, 59, 0.15);
+      --paper-white: #0F1115;
+      --card-dark: #1A1D24;
+      --card-inner: #242933;
+      --text-white: #FFFFFF;
+      --slate-text: #9CA3AF;
+      --green-income: #10B981;
+      --red-expense: #EF4444;
+      --font-main: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+      --shadow-soft: 0 12px 30px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      font-family: var(--font-main);
+      background-color: var(--paper-white);
+      color: var(--text-white);
+      min-height: 100vh;
+      padding-bottom: 90px;
+      overflow-x: hidden;
+    }
+
+    /* iOS Status Bar Padding Safe Area */
+    .ios-safe-top {
+      height: env(safe-area-inset-top, 24px);
+      background-color: var(--graphite-ink);
+    }
+
+    .app-container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 20px;
+    }
+
+    /* Top App Header */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-top: 8px;
+    }
+
+    .brand-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-title span { color: var(--copper-signal); font-weight: 500; }
+
+    .header-pill {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(193, 121, 59, 0.2);
+      color: var(--copper-light);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(193, 121, 59, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--green-income);
+    }
+
+    /* Main Balance Hero Card (Apple Wallet Style) */
+    .balance-card {
+      background: linear-gradient(145deg, #1C2028 0%, #15181F 100%);
+      border: 1px solid var(--graphite-border);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .balance-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, var(--copper-signal) 0%, transparent 70%);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .balance-label {
+      font-size: 13px;
+      color: var(--slate-text);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .balance-amount {
+      font-size: 38px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .balance-currency {
+      color: var(--copper-signal);
+      font-size: 24px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 16px;
+    }
+
+    .stat-box-mini {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-title {
+      font-size: 11px;
+      color: var(--slate-text);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .stat-val-income {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--green-income);
+    }
+
+    .stat-val-expense {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--red-expense);
+    }
+
+    /* Quick Action Buttons (iOS Tap Bar) */
+    .quick-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+
+    .action-btn-card {
+      background: var(--card-dark);
+      border: 1px solid var(--graphite-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+      color: #FFFFFF;
+      text-align: left;
+    }
+
+    .action-btn-card:active {
+      transform: scale(0.97);
+    }
+
+    .action-icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .income-icon { background: rgba(16, 185, 129, 0.15); color: var(--green-income); }
+    .expense-icon { background: rgba(239, 68, 68, 0.15); color: var(--red-expense); }
+
+    .action-label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .action-sub {
+      font-size: 11px;
+      color: var(--slate-text);
+    }
+
+    /* Sections */
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    /* Profit Margins By Product Card */
+    .margin-item-card {
+      background: var(--card-dark);
+      border: 1px solid var(--graphite-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .margin-info h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .margin-info p {
+      font-size: 12px;
+      color: var(--slate-text);
+    }
+
+    .margin-badge {
+      text-align: right;
+    }
+
+    .margin-pct {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--copper-light);
+    }
+
+    .margin-net {
+      font-size: 11px;
+      color: var(--green-income);
+      font-weight: 600;
+    }
+
+    /* Transactions List */
+    .transaction-card {
+      background: var(--card-dark);
+      border: 1px solid var(--graphite-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tx-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tx-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--card-inner);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .tx-name {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .tx-date {
+      font-size: 11px;
+      color: var(--slate-text);
+    }
+
+    .tx-amount {
+      font-size: 15px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .tx-income { color: var(--green-income); }
+    .tx-expense { color: var(--red-expense); }
+
+    /* Bottom iOS Navigation Bar */
+    .ios-tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(23, 26, 31, 0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--graphite-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 12px));
+      z-index: 100;
+    }
+
+    .ios-tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--slate-text);
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      cursor: pointer;
+      width: 25%;
+    }
+
+    .ios-tab-btn.active {
+      color: var(--copper-light);
+    }
+
+    .ios-tab-icon {
+      font-size: 20px;
+    }
+
+    /* Modal Form for Income/Expense */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: #1C2028;
+      border-top: 1px solid var(--graphite-border);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      padding: 24px 20px 40px;
+      box-shadow: var(--shadow-soft);
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .sheet-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-label {
+      font-size: 12px;
+      color: var(--slate-text);
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: #15181F;
+      border: 1px solid var(--graphite-border);
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--copper-signal);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--copper-signal);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Views */
+    .view-container { display: none; }
+    .view-container.active { display: block; }
+
+    /* iPhone Lock PIN Overlay */
+    .pin-lock {
+      position: fixed;
+      inset: 0;
+      background: var(--paper-white);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .pin-lock.unlocked { display: none; }
+    .pin-dots-row { display: flex; gap: 14px; margin: 30px 0; }
+    .pin-dot-circle { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--copper-signal); }
+    .pin-dot-circle.filled { background-color: var(--copper-signal); }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 72px);
+      gap: 16px;
+    }
+
+    .key-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--card-dark);
+      border: 1px solid var(--graphite-border);
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .key-btn:active { background: var(--copper-signal); }
+  </style>
+</head>
+<body>
+
+  <!-- iOS SAFE AREA TOP -->
+  <div class="ios-safe-top"></div>
+
+  <!-- PIN LOCK SCREEN (iOS PASSCODE STYLE - PIN: 1234) -->
+  <div class="pin-lock" id="pin-lock">
+    <div style="font-size: 32px; font-weight: 700; margin-bottom: 4px;">tap<span style="color:var(--copper-signal)">lab</span></div>
+    <div style="font-size: 14px; color: var(--copper-light); font-weight: 600; margin-bottom: 14px;">FINANCE APP</div>
+    <p style="font-size: 13px; color: var(--slate-text);">Ingresa tu PIN de Acceso (PIN: 1234)</p>
+
+    <div class="pin-dots-row">
+      <div class="pin-dot-circle" id="dot-0"></div>
+      <div class="pin-dot-circle" id="dot-1"></div>
+      <div class="pin-dot-circle" id="dot-2"></div>
+      <div class="pin-dot-circle" id="dot-3"></div>
+    </div>
+
+    <div class="keypad-grid">
+      <button class="key-btn" onclick="pressKey('1')">1</button>
+      <button class="key-btn" onclick="pressKey('2')">2</button>
+      <button class="key-btn" onclick="pressKey('3')">3</button>
+      <button class="key-btn" onclick="pressKey('4')">4</button>
+      <button class="key-btn" onclick="pressKey('5')">5</button>
+      <button class="key-btn" onclick="pressKey('6')">6</button>
+      <button class="key-btn" onclick="pressKey('7')">7</button>
+      <button class="key-btn" onclick="pressKey('8')">8</button>
+      <button class="key-btn" onclick="pressKey('9')">9</button>
+      <div></div>
+      <button class="key-btn" onclick="pressKey('0')">0</button>
+      <button class="key-btn" style="font-size:18px;" onclick="clearPin()">⌫</button>
+    </div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- APP HEADER -->
+    <header class="app-header">
+      <div>
+        <h1 class="brand-title">tap<span>lab</span> Finance</h1>
+        <div style="font-size: 12px; color: var(--slate-text);">Control de Flujo de Caja & Rentabilidad</div>
+      </div>
+      <div class="header-pill">
+        <span class="live-dot"></span>
+        Sincronizado
+      </div>
+    </header>
+
+    <!-- VIEW 1: RESUMEN / CASH FLOW -->
+    <div class="view-container active" id="view-resumen">
+      
+      <!-- HERO BALANCE CARD -->
+      <div class="balance-card">
+        <div class="balance-label">Ganancia Neta Disponible</div>
+        <div class="balance-amount">
+          <span class="balance-currency">L</span>
+          <span id="display-net-profit">3,450</span>
+        </div>
+        
+        <div class="stats-row">
+          <div class="stat-box-mini">
+            <span class="stat-title">Ingresos Totales</span>
+            <span class="stat-val-income" id="display-total-income">+ L 4,730</span>
+          </div>
+          <div class="stat-box-mini">
+            <span class="stat-title">Costos / Gastos</span>
+            <span class="stat-val-expense" id="display-total-expense">- L 1,280</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK ACTION BUTTONS -->
+      <div class="quick-actions-row">
+        <div class="action-btn-card" onclick="openTxModal('income')">
+          <div class="action-icon-circle income-icon">＋</div>
+          <div>
+            <div class="action-label">Ingreso / Venta</div>
+            <div class="action-sub">Registrar cobro</div>
+          </div>
+        </div>
+
+        <div class="action-btn-card" onclick="openTxModal('expense')">
+          <div class="action-icon-circle expense-icon">−</div>
+          <div>
+            <div class="action-label">Gasto / Insumo</div>
+            <div class="action-sub">Registrar costo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARGINS BREAKDOWN -->
+      <div class="section-title-row">
+        <h2 class="section-title">Márgenes por Producto Estrella</h2>
+      </div>
+
+      <div class="margin-item-card">
+        <div class="margin-info">
+          <h4>⭐ Review TAP Acrílico</h4>
+          <p>Precio L 650 · Costo Insumos L 80</p>
+        </div>
+        <div class="margin-badge">
+          <div class="margin-pct">87.6%</div>
+          <div class="margin-net">+ L 570 neto</div>
+        </div>
+      </div>
+
+      <div class="margin-item-card">
+        <div class="margin-info">
+          <h4>🪪 TAP CARD Pro Metal</h4>
+          <p>Precio L 500 · Costo Insumos L 95</p>
+        </div>
+        <div class="margin-badge">
+          <div class="margin-pct">81.0%</div>
+          <div class="margin-net">+ L 405 neto</div>
+        </div>
+      </div>
+
+      <div class="margin-item-card">
+        <div class="margin-info">
+          <h4>💼 Business Starter Kit</h4>
+          <p>Precio L 1,200 · Costo Insumos L 210</p>
+        </div>
+        <div class="margin-badge">
+          <div class="margin-pct">82.5%</div>
+          <div class="margin-net">+ L 990 neto</div>
+        </div>
+      </div>
+
+      <!-- RECENT TRANSACTIONS -->
+      <div class="section-title-row" style="margin-top: 24px;">
+        <h2 class="section-title">Últimos Movimientos</h2>
+      </div>
+
+      <div id="transactions-list">
+        <!-- Injected by script -->
+      </div>
+    </div>
+
+    <!-- VIEW 2: SIMULADOR DE PROYECCIONES B2B -->
+    <div class="view-container" id="view-proyecciones">
+      <div class="section-title-row">
+        <h2 class="section-title">Simulador de Ganancias TAPLAB</h2>
+      </div>
+
+      <div class="balance-card">
+        <div class="balance-label">Ventas Estimadas al Mes</div>
+        <div style="margin: 16px 0;">
+          <div style="font-size: 14px; margin-bottom: 6px; display:flex; justify-content:space-between;">
+            <span>Review Taps vendidos:</span>
+            <strong id="sim-units-display" style="color:var(--copper-light);">30 unidades</strong>
+          </div>
+          <input type="range" min="5" max="150" value="30" id="sim-slider" oninput="updateSim(this.value)" style="width:100%; accent-color:var(--copper-signal);">
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box-mini">
+            <span class="stat-title">Facturación Bruta</span>
+            <span class="stat-val-income" id="sim-gross">L 19,500</span>
+          </div>
+          <div class="stat-box-mini">
+            <span class="stat-title">Ganancia Neta en Bolsillo</span>
+            <span class="stat-val-income" id="sim-net" style="color:var(--copper-light);">L 17,100</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="margin-item-card" style="background:#1C2028;">
+        <div class="margin-info">
+          <h4>🎯 Meta: 50 Restaurantes / Clientes</h4>
+          <p>Con 50 Review Taps al mes generas:</p>
+        </div>
+        <div class="margin-badge">
+          <div class="margin-pct" style="color:#10B981;">L 28,500</div>
+          <div class="margin-net">Ganancia Neta Libre</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: REPORTES & EXPORT -->
+    <div class="view-container" id="view-reportes">
+      <div class="section-title-row">
+        <h2 class="section-title">Exportar Reporte Financiero</h2>
+      </div>
+
+      <div class="margin-item-card" onclick="exportWhatsAppReport()" style="cursor:pointer; margin-bottom:14px;">
+        <div class="margin-info">
+          <h4>📲 Enviar Resumen a mi WhatsApp</h4>
+          <p>Recibe tu balance y ganancias directamente en tu chat</p>
+        </div>
+        <div style="font-size: 24px;">💬</div>
+      </div>
+
+      <div class="margin-item-card" onclick="alert('Datos sincronizados en el almacenamiento local de tu iPhone.')">
+        <div class="margin-info">
+          <h4>💾 Sincronización Local Offline</h4>
+          <p>Tus finanzas se guardan directamente en la memoria de tu iPhone</p>
+        </div>
+        <div style="font-size: 24px;">🔒</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL DE TRANSACCIÓN (ENTRADA / SALIDA) -->
+  <div class="modal-overlay" id="tx-modal">
+    <div class="modal-sheet">
+      <div class="sheet-title">
+        <span id="tx-modal-title">Registrar Movimiento</span>
+        <button onclick="closeTxModal()" style="font-size: 18px; color: var(--slate-text);">✕</button>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Concepto o Cliente:</label>
+        <input type="text" id="tx-desc" class="input-field" placeholder="Ej: Venta Review TAP / Compra de Acrílicos">
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Monto en Lempiras (L):</label>
+        <input type="number" id="tx-amount" class="input-field" placeholder="0.00">
+      </div>
+
+      <button class="btn-submit" onclick="saveTransaction()">Guardar en Finanzas</button>
+    </div>
+  </div>
+
+  <!-- iOS NATIVE BOTTOM TAB BAR -->
+  <nav class="ios-tab-bar">
+    <button class="ios-tab-btn active" onclick="switchNav('resumen', this)">
+      <span class="ios-tab-icon">💳</span>
+      <span>Flujo</span>
+    </button>
+    <button class="ios-tab-btn" onclick="switchNav('proyecciones', this)">
+      <span class="ios-tab-icon">📈</span>
+      <span>Metas</span>
+    </button>
+    <button class="ios-tab-btn" onclick="switchNav('reportes', this)">
+      <span class="ios-tab-icon">📑</span>
+      <span>Reportes</span>
+    </button>
+    <button class="ios-tab-btn" onclick="lockApp()">
+      <span class="ios-tab-icon">🔒</span>
+      <span>Bloquear</span>
+    </button>
+  </nav>
+
+  <script>
+    // PIN AUTH
+    let currentPin = '';
+    const CORRECT_PIN = '1234';
+
+    function checkAuth() {
+      if (sessionStorage.getItem('taplab_fin_auth') === 'true') {
+        document.getElementById('pin-lock').classList.add('unlocked');
+      }
+    }
+
+    function pressKey(num) {
+      if (currentPin.length < 4) {
+        currentPin += num;
+        updateDots();
+        if (currentPin.length === 4) {
+          setTimeout(verifyPin, 100);
+        }
+      }
+    }
+
+    function clearPin() {
+      currentPin = currentPin.slice(0, -1);
+      updateDots();
+    }
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (i < currentPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+      }
+    }
+
+    function verifyPin() {
+      if (currentPin === CORRECT_PIN) {
+        sessionStorage.setItem('taplab_fin_auth', 'true');
+        document.getElementById('pin-lock').classList.add('unlocked');
+      } else {
+        alert('PIN Incorrecto');
+        currentPin = '';
+        updateDots();
+      }
+    }
+
+    function lockApp() {
+      sessionStorage.removeItem('taplab_fin_auth');
+      currentPin = '';
+      updateDots();
+      document.getElementById('pin-lock').classList.remove('unlocked');
+    }
+
+    // FINANCE TRANSACTIONS DATA
+    const INITIAL_TXS = [
+      { id: '1', type: 'income', name: 'Venta Review TAP (Café Bistro)', amount: 650, date: 'Hoy' },
+      { id: '2', type: 'income', name: 'Business Starter Kit (Barbería)', amount: 1200, date: 'Ayer' },
+      { id: '3', type: 'expense', name: 'Compra 50 Chips NTAG213', amount: 400, date: '04 Sep' },
+      { id: '4', type: 'income', name: 'TAP CARD Metal (Dra. Sofía)', amount: 500, date: '03 Sep' },
+      { id: '5', type: 'expense', name: 'Lote de Stands Acrílicos', amount: 880, date: '02 Sep' }
+    ];
+
+    let txs = JSON.parse(localStorage.getItem('taplab_finance_txs')) || INITIAL_TXS;
+
+    function renderFinance() {
+      const income = txs.filter(t => t.type === 'income').reduce((a, b) => a + b.amount, 0);
+      const expense = txs.filter(t => t.type === 'expense').reduce((a, b) => a + b.amount, 0);
+      const net = income - expense;
+
+      document.getElementById('display-net-profit').textContent = net.toLocaleString();
+      document.getElementById('display-total-income').textContent = `+ L ${income.toLocaleString()}`;
+      document.getElementById('display-total-expense').textContent = `- L ${expense.toLocaleString()}`;
+
+      const list = document.getElementById('transactions-list');
+      list.innerHTML = txs.map(t => `
+        <div class="transaction-card">
+          <div class="tx-left">
+            <div class="tx-icon">${t.type === 'income' ? '💰' : '📦'}</div>
+            <div>
+              <div class="tx-name">${t.name}</div>
+              <div class="tx-date">${t.date}</div>
+            </div>
+          </div>
+          <div class="tx-amount ${t.type === 'income' ? 'tx-income' : 'tx-expense'}">
+            ${t.type === 'income' ? '+' : '-'} L ${t.amount.toLocaleString()}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let activeModalType = 'income';
+
+    function openTxModal(type) {
+      activeModalType = type;
+      document.getElementById('tx-modal-title').textContent = type === 'income' ? '+ Registrar Ingreso / Venta' : '− Registrar Gasto / Insumo';
+      document.getElementById('tx-modal').classList.add('active');
+    }
+
+    function closeTxModal() {
+      document.getElementById('tx-modal').classList.remove('active');
+      document.getElementById('tx-desc').value = '';
+      document.getElementById('tx-amount').value = '';
+    }
+
+    function saveTransaction() {
+      const desc = document.getElementById('tx-desc').value || 'Movimiento TAPLAB';
+      const amount = parseFloat(document.getElementById('tx-amount').value) || 0;
+      if (amount <= 0) return;
+
+      txs.unshift({
+        id: String(Date.now()),
+        type: activeModalType,
+        name: desc,
+        amount: amount,
+        date: 'Hoy'
+      });
+
+      localStorage.setItem('taplab_finance_txs', JSON.stringify(txs));
+      closeTxModal();
+      renderFinance();
+    }
+
+    function switchNav(viewId, btn) {
+      document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.ios-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('view-' + viewId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function updateSim(val) {
+      const units = Number(val);
+      document.getElementById('sim-units-display').textContent = `${units} unidades`;
+      const gross = units * 650;
+      const cost = units * 80;
+      const net = gross - cost;
+
+      document.getElementById('sim-gross').textContent = `L ${gross.toLocaleString()}`;
+      document.getElementById('sim-net').textContent = `L ${net.toLocaleString()}`;
+    }
+
+    function exportWhatsAppReport() {
+      const income = txs.filter(t => t.type === 'income').reduce((a, b) => a + b.amount, 0);
+      const expense = txs.filter(t => t.type === 'expense').reduce((a, b) => a + b.amount, 0);
+      const net = income - expense;
+
+      let msg = `📊 *REPORTE FINANCIERO TAPLAB*\n\n`;
+      msg += `💰 *Ingresos Totales:* L ${income.toLocaleString()}\n`;
+      msg += `📦 *Costos e Insumos:* L ${expense.toLocaleString()}\n`;
+      msg += `✨ *Ganancia Neta Disponible:* L ${net.toLocaleString()}\n\n`;
+      msg += `Generado desde mi iPhone TAPLAB Finance App.`;
+
+      window.open(`https://wa.me/50499999999?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    checkAuth();
+    renderFinance();
+  </script>
+</body>
+</html>
