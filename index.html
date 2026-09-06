@@ -6,26 +6,192 @@
   <title>TAPLAB — Objetos cotidianos. Experiencias inteligentes.</title>
   <meta name="description" content="TAPLAB transforma objetos simples y cotidianos en productos inteligentes mediante tecnología accesible como NFC, códigos QR y personalización digital.">
   
-  <link rel="icon" type="image/png" href="/assets/images/isotype-dark.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/isotype-dark.png">
+  
+  <!-- Google Fonts: Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css">
+  
+  <style>
+    /* ==========================================
+       TAPLAB BRAND SYSTEM
+       ========================================== */
+    :root {
+      --graphite-ink: #171A1F;
+      --graphite-light: #23272F;
+      --copper-signal: #C1793B;
+      --copper-light: #E3A868;
+      --copper-hover: #AB682F;
+      --copper-subtle: rgba(193, 121, 59, 0.12);
+      --copper-glow: rgba(193, 121, 59, 0.25);
+      --paper-white: #F7F6F2;
+      --paper-card: #FFFFFF;
+      --slate-text: #6B7280;
+      --slate-light: #E5E7EB;
+      --border-light: rgba(23, 26, 31, 0.08);
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --font-main: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 2px 8px rgba(23, 26, 31, 0.04);
+      --shadow-md: 0 10px 30px rgba(23, 26, 31, 0.07);
+      --shadow-lg: 0 20px 50px rgba(23, 26, 31, 0.12);
+      --container-max: 1200px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-family: var(--font-main); background-color: var(--paper-white); color: var(--graphite-ink); line-height: 1.6; }
+    body { overflow-x: hidden; background-color: var(--paper-white); color: var(--graphite-ink); font-family: var(--font-main); font-weight: 400; }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+    h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; }
+
+    /* Header */
+    .site-header { position: sticky; top: 0; z-index: 100; background-color: rgba(247, 246, 242, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light); }
+    .header-container { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+    .brand-logo-text { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--graphite-ink); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .brand-logo-text span { color: var(--copper-signal); font-weight: 500; }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-link { font-size: 15px; font-weight: 500; color: var(--slate-text); transition: var(--transition); }
+    .nav-link:hover { color: var(--graphite-ink); }
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: var(--radius-full); transition: var(--transition); cursor: pointer; white-space: nowrap; }
+    .btn-primary { background-color: var(--copper-signal); color: #FFFFFF; }
+    .btn-primary:hover { background-color: var(--copper-hover); transform: translateY(-2px); box-shadow: 0 8px 20px var(--copper-glow); }
+    .btn-outline { border: 1.5px solid var(--border-light); color: var(--graphite-ink); background-color: #FFFFFF; }
+    .btn-outline:hover { border-color: var(--copper-signal); color: var(--copper-signal); background-color: var(--copper-subtle); }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    .btn-icon { position: relative; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #FFFFFF; border: 1px solid var(--border-light); }
+    .cart-badge { position: absolute; top: -4px; right: -4px; background-color: var(--copper-signal); color: white; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* Hero */
+    .hero { padding: 60px 0 80px; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
+    .badge-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--copper-subtle); color: var(--copper-signal); font-size: 13px; font-weight: 600; border-radius: var(--radius-full); border: 1px solid rgba(193, 121, 59, 0.2); margin-bottom: 20px; }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background-color: var(--copper-signal); }
+    .hero-title { font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 20px; }
+    .hero-title span { color: var(--copper-signal); }
+    .hero-desc { font-size: 18px; color: var(--slate-text); line-height: 1.6; margin-bottom: 32px; max-width: 520px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 36px; }
+    .hero-checks { display: flex; flex-wrap: wrap; gap: 20px; font-size: 14px; font-weight: 600; color: var(--graphite-ink); border-top: 1px solid var(--border-light); padding-top: 20px; }
+
+    /* Hero Showcase Card */
+    .hero-card-showcase { width: 100%; max-width: 420px; height: 460px; background: linear-gradient(145deg, #171A1F, #222731); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-lg); color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border-dark); margin: 0 auto; position: relative; }
+    .nfc-ring { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--copper-light); display: flex; align-items: center; justify-content: center; }
+
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-dark { background-color: var(--graphite-ink); color: #FFFFFF; }
+    .section-header { text-align: center; max-width: 700px; margin: 0 auto 50px; }
+    .section-tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--copper-signal); margin-bottom: 10px; display: block; }
+    .section-title { font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 14px; }
+    .section-subtitle { font-size: 16px; color: var(--slate-text); }
+    .section-dark .section-subtitle { color: #9CA3AF; }
+
+    /* Concept & Formula */
+    .concept-box { background: #FFFFFF; border-radius: var(--radius-lg); padding: 40px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); }
+    .formula-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin: 30px 0; padding: 20px; background: var(--paper-white); border-radius: var(--radius-md); }
+    .formula-node { background: #FFFFFF; padding: 14px 20px; border-radius: var(--radius-sm); font-weight: 700; border: 1px solid var(--border-light); }
+    .formula-node.highlight { background: var(--graphite-ink); color: var(--copper-light); border-color: var(--graphite-ink); }
+    .formula-operator { font-size: 22px; font-weight: 700; color: var(--copper-signal); }
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 30px; }
+    .pillar-card { padding: 24px; background: #FFFFFF; border-radius: var(--radius-md); border: 1px solid var(--border-light); }
+
+    /* Simulator */
+    .simulator-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: #171A1F; border-radius: var(--radius-lg); padding: 50px; color: #FFFFFF; border: 1px solid var(--border-dark); }
+    .sim-item-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md); color: #FFFFFF; font-weight: 600; margin-bottom: 10px; cursor: pointer; text-align: left; }
+    .sim-item-btn.active, .sim-item-btn:hover { background: var(--copper-signal); border-color: var(--copper-signal); }
+    .phone-mockup { width: 300px; height: 540px; margin: 0 auto; background: #000000; border-radius: 40px; border: 6px solid #2A2F38; padding: 30px 16px 20px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .phone-screen { background: var(--paper-white); color: var(--graphite-ink); border-radius: 24px; padding: 16px; flex-grow: 1; overflow-y: auto; text-align: center; }
+
+    /* Catalog Products */
+    .filter-tabs { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+    .filter-btn { padding: 8px 18px; border-radius: var(--radius-full); font-size: 14px; font-weight: 600; background: #FFFFFF; border: 1px solid var(--border-light); color: var(--slate-text); }
+    .filter-btn.active, .filter-btn:hover { background: var(--graphite-ink); color: #FFFFFF; border-color: var(--graphite-ink); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
+    .product-card { background: #FFFFFF; border-radius: var(--radius-lg); border: 1px solid var(--border-light); overflow: hidden; display: flex; flex-direction: column; transition: var(--transition); position: relative; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(193, 121, 59, 0.3); }
+    .product-badge { position: absolute; top: 14px; left: 14px; z-index: 2; background: var(--copper-signal); color: #FFFFFF; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-full); }
+    .product-img-box { height: 260px; background: #F0EFEA; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .product-img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+    .product-title { font-size: 20px; margin-bottom: 4px; }
+    .product-tagline { font-size: 13px; color: var(--slate-text); margin-bottom: 14px; font-weight: 500; }
+    .product-desc { font-size: 13px; color: var(--slate-text); line-height: 1.5; margin-bottom: 16px; }
+    .variants-box { background: var(--paper-white); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 18px; }
+    .variants-row { display: flex; gap: 6px; margin-top: 6px; }
+    .var-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 600; background: #FFFFFF; border: 1px solid var(--border-light); border-radius: 4px; cursor: pointer; }
+    .var-btn.active { background: var(--graphite-ink); color: #FFFFFF; border-color: var(--graphite-ink); }
+    .product-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border-light); }
+    .price-num { font-size: 20px; font-weight: 700; color: var(--graphite-ink); }
+    .price-num span { color: var(--copper-signal); }
+
+    /* Business B2B */
+    .biz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .biz-card { background: #FFFFFF; border-radius: var(--radius-lg); padding: 36px; border: 1px solid var(--border-light); display: flex; flex-direction: column; }
+    .biz-card.highlight { border: 2px solid var(--copper-signal); background: linear-gradient(180deg, #FFFFFF, #FAF8F5); }
+
+    /* Steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .step-card { background: #FFFFFF; padding: 26px; border-radius: var(--radius-md); border: 1px solid var(--border-light); }
+    .step-num { font-size: 12px; font-weight: 700; color: var(--copper-signal); letter-spacing: 0.1em; margin-bottom: 10px; }
+
+    /* Cart Drawer */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; }
+    .cart-overlay.active { display: block; }
+    .cart-drawer { position: fixed; top: 0; right: -420px; width: 100%; max-width: 380px; height: 100%; background: #FFFFFF; z-index: 210; display: flex; flex-direction: column; transition: right 0.3s ease; box-shadow: var(--shadow-lg); }
+    .cart-drawer.active { right: 0; }
+    .cart-header { padding: 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+    .cart-body { flex-grow: 1; overflow-y: auto; padding: 20px; }
+    .cart-foot { padding: 20px; border-top: 1px solid var(--border-light); background: var(--paper-white); }
+
+    /* Footer */
+    .site-footer { background: var(--graphite-ink); color: #FFFFFF; padding: 60px 0 30px; border-top: 1px solid var(--border-dark); }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 40px; }
+    .footer-grid p { color: #9CA3AF; font-size: 14px; margin-top: 10px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a { color: #9CA3AF; font-size: 13px; }
+    .footer-links a:hover { color: var(--copper-light); }
+    .footer-bot { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid, .simulator-wrapper, .biz-grid, .footer-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .hero-title { font-size: 2.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- SITE HEADER / NAVBAR -->
+  <!-- NAVBAR -->
   <header class="site-header">
     <div class="container header-container">
-      <a href="/" class="brand-logo-link" title="TAPLAB">
-        <img src="/assets/images/logo-light-bg.png" alt="tap lab" class="brand-logo-img">
-      </a>
+      <div class="brand-logo-text" id="header-logo" title="TAPLAB">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="flex-shrink: 0;">
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="#171A1F"/>
+          <circle cx="7" cy="7" r="2" fill="#FFFFFF"/>
+          <path d="M14 18c2.2-2.2 2.2-5.8 0-8" stroke="#C1793B" stroke-width="2" stroke-linecap="round"/>
+          <path d="M17 19c3.8-3.8 3.8-10 0-13.8" stroke="#E3A868" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        tap<span>lab</span>
+      </div>
 
       <nav>
-        <ul class="nav-links" id="nav-links">
+        <ul class="nav-links">
           <li><a href="#concepto" class="nav-link">Concepto</a></li>
           <li><a href="#productos" class="nav-link">Productos</a></li>
-          <li><a href="#demo" class="nav-link">Demo Interactiva</a></li>
+          <li><a href="#demo" class="nav-link">Demo</a></li>
           <li><a href="#negocios" class="nav-link">Para Negocios</a></li>
           <li><a href="#como-funciona" class="nav-link">¿Cómo Funciona?</a></li>
         </ul>
@@ -33,107 +199,59 @@
 
       <div class="header-actions">
         <button class="btn-icon" id="cart-toggle-btn" aria-label="Ver carrito">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
+          🛒
           <span class="cart-badge" id="cart-count">0</span>
         </button>
-
         <a href="#productos" class="btn btn-primary btn-sm">Pedir Ahora</a>
-
-        <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menú móvil">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
       </div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
-        <div class="hero-content">
-          <div class="hero-tag">
-            <div class="badge-pill">
-              <span class="badge-dot"></span>
-              Objetos cotidianos · Experiencias inteligentes
-            </div>
+        <div>
+          <div class="badge-pill">
+            <span class="badge-dot"></span>
+            Objetos cotidianos · Experiencias inteligentes
           </div>
           <h1 class="hero-title">
-            Haz que los objetos <span class="highlight">hagan más.</span>
+            Haz que los objetos <span>hagan más.</span>
           </h1>
-          <p class="hero-description">
+          <p class="hero-desc">
             Transformamos objetos simples en productos inteligentes mediante tecnología accesible como <strong>NFC</strong>, <strong>códigos QR</strong> y <strong>personalización digital</strong>.
           </p>
           <div class="hero-ctas">
             <a href="#productos" class="btn btn-primary">Explorar Productos</a>
             <a href="#demo" class="btn btn-outline">Probar Demo Interactiva</a>
           </div>
-          <div class="hero-features-list">
-            <div class="feature-item-mini">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Sin aplicaciones requeridas
-            </div>
-            <div class="feature-item-mini">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Compatible con iOS y Android
-            </div>
-            <div class="feature-item-mini">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Configuración en segundos
-            </div>
+          <div class="hero-checks">
+            <div>✓ Sin apps requeridas</div>
+            <div>✓ iOS & Android 100%</div>
+            <div>✓ Configuración rápida</div>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-card-showcase">
-            <div class="card-top">
-              <div class="chip-graphic">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
-                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                  <rect x="9" y="9" width="6" height="6"></rect>
-                </svg>
-              </div>
-              <div class="nfc-waves">
-                <div class="nfc-ring">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div class="card-middle">
-              <div class="card-holder-name">TAP CARD PRO</div>
-              <div class="card-holder-role">Conexión Instantánea NFC + QR</div>
-            </div>
-
-            <div class="card-bottom">
-              <img src="/assets/images/logo-dark-bg.png" alt="tap lab" style="height: 28px; width: auto;">
-              <span style="font-size: 11px; color: var(--copper-light); font-weight: 600; letter-spacing: 0.05em;">SMART OBJECT</span>
-            </div>
+        <div class="hero-card-showcase">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="width: 44px; height: 34px; background: linear-gradient(135deg, #E3A868, #C1793B); border-radius: 6px;"></div>
+            <div class="nfc-ring">⚡</div>
           </div>
-
-          <div class="floating-action-badge">
-            <span style="font-size: 20px;">⚡</span>
-            <div>
-              <div style="font-size: 12px; color: var(--slate-text);">1 Toque con tu teléfono</div>
-              <div style="font-weight: 700; color: var(--graphite-ink);">Comparte todo tu mundo</div>
-            </div>
+          <div style="margin: 40px 0;">
+            <div style="font-size: 24px; font-weight: 700;">TAP CARD PRO</div>
+            <div style="color: var(--copper-light); font-size: 14px;">Conexión Instantánea NFC + QR</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="brand-logo-text" style="color: #FFFFFF; font-size: 20px;">tap<span>lab</span></div>
+            <span style="font-size: 11px; color: var(--copper-light); font-weight: 700;">SMART OBJECT</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONCEPT SECTION -->
+  <!-- CONCEPT -->
   <section class="section" id="concepto">
     <div class="container">
       <div class="concept-box">
@@ -141,14 +259,14 @@
           <span class="section-tag">Nuestra Filosofía</span>
           <h2 class="section-title">¿Qué es TAPLAB?</h2>
           <p class="section-subtitle">
-            No vendemos tecnología complicada. Vendemos objetos que hacen algo inesperado: un llavero que comparte tu contacto, una tarjeta que reemplaza cientos de papeles, o una placa que llena tu negocio de reseñas.
+            No vendemos tecnología complicada. Vendemos objetos que hacen algo inesperado: un llavero que comparte tu contacto, una tarjeta que reemplaza cientos de papeles o una placa que consigue reseñas en tu negocio.
           </p>
         </div>
 
         <div class="formula-grid">
           <div class="formula-node">Objeto simple</div>
           <div class="formula-operator">+</div>
-          <div class="formula-node">Tecnología NFC/QR</div>
+          <div class="formula-node">Tecnología NFC / QR</div>
           <div class="formula-operator">+</div>
           <div class="formula-node">Diseño físico</div>
           <div class="formula-operator">=</div>
@@ -157,154 +275,130 @@
 
         <div class="pillars-grid">
           <div class="pillar-card">
-            <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            </div>
-            <h3 class="pillar-title">Cero Aplicaciones</h3>
-            <p class="pillar-desc">Cualquier persona puede tocar o escanear sin necesidad de descargar apps adicionales.</p>
+            <div style="font-size: 24px; margin-bottom: 8px;">📲</div>
+            <h3 style="font-size: 17px; margin-bottom: 6px;">Cero Apps</h3>
+            <p style="font-size: 13px; color: var(--slate-text);">Funciona automáticamente al acercar cualquier teléfono compatible.</p>
           </div>
-
           <div class="pillar-card">
-            <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-            </div>
-            <h3 class="pillar-title">100% Compatible</h3>
-            <p class="pillar-desc">Funciona nativamente con iPhone y Android a través de NFC y códigos QR de respaldo.</p>
+            <div style="font-size: 24px; margin-bottom: 8px;">🔄</div>
+            <h3 style="font-size: 17px; margin-bottom: 6px;">Actualizable</h3>
+            <p style="font-size: 13px; color: var(--slate-text);">Cambia tus enlaces o información en cualquier momento.</p>
           </div>
-
           <div class="pillar-card">
-            <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            </div>
-            <h3 class="pillar-title">Personalización Total</h3>
-            <p class="pillar-desc">Diseños a medida con tu logotipo, colores, redes, menús o información médica.</p>
+            <div style="font-size: 24px; margin-bottom: 8px;">✨</div>
+            <h3 style="font-size: 17px; margin-bottom: 6px;">Personalizado</h3>
+            <p style="font-size: 13px; color: var(--slate-text);">Fabricado a medida con tu logotipo, colores y redes.</p>
           </div>
-
           <div class="pillar-card">
-            <div class="pillar-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            </div>
-            <h3 class="pillar-title">Actualización Instantánea</h3>
-            <p class="pillar-desc">Cambia tus enlaces e información en cualquier momento sin tener que reimprimir.</p>
+            <div style="font-size: 24px; margin-bottom: 8px;">⭐</div>
+            <h3 style="font-size: 17px; margin-bottom: 6px;">Más Ventas</h3>
+            <p style="font-size: 13px; color: var(--slate-text);">Ideal para captar reseñas y conectar clientes al instante.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- INTERACTIVE SIMULATOR SECTION -->
+  <!-- INTERACTIVE SIMULATOR -->
   <section class="section section-dark" id="demo">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Experiencia en Vivo</span>
         <h2 class="section-title">Experimenta el efecto "Tap"</h2>
-        <p class="section-subtitle">Selecciona uno de nuestros productos inteligentes y mira lo que ve el usuario en su pantalla en una fracción de segundo.</p>
+        <p class="section-subtitle">Toca una opción para ver lo que aparece en el teléfono en 1 segundo:</p>
       </div>
 
       <div class="simulator-wrapper">
-        <div class="simulator-controls">
-          <h3>Elige un producto para probar:</h3>
-          <p>Haz clic en cualquier opción para simular la interacción real con un smartphone:</p>
-          
-          <div class="sim-picker">
-            <button class="sim-item-btn active" data-sim="tap-card">
-              <span>🪪 01 — TAP CARD</span>
-              <span class="tag">Identidad Digital</span>
-            </button>
-            <button class="sim-item-btn" data-sim="review-tap">
-              <span>⭐ 02 — REVIEW TAP</span>
-              <span class="tag">Google 5 Estrellas</span>
-            </button>
-            <button class="sim-item-btn" data-sim="wifi-tap">
-              <span>📶 03 — WIFI TAP</span>
-              <span class="tag">Conexión 1 Clic</span>
-            </button>
-            <button class="sim-item-btn" data-sim="pet-tag">
-              <span>🐾 04 — PET TAG</span>
-              <span class="tag">Mascota Segura</span>
-            </button>
-          </div>
-
-          <div style="background: rgba(255,255,255,0.06); padding: 18px; border-radius: var(--radius-md); border-left: 3px solid var(--copper-signal);">
-            <p style="font-size: 13px; color: #D1D5DB; margin: 0;">
-              💡 <strong>Tip Pro:</strong> El 95% de los teléfonos modernos leen el chip NFC automáticamente sin abrir ninguna app.
-            </p>
-          </div>
+        <div>
+          <button class="sim-item-btn active" onclick="loadSim('card', this)">
+            <span>🪪 01 — TAP CARD</span>
+            <span style="font-size: 11px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">Contacto Digital</span>
+          </button>
+          <button class="sim-item-btn" onclick="loadSim('review', this)">
+            <span>⭐ 02 — REVIEW TAP</span>
+            <span style="font-size: 11px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">Google 5 Estrellas</span>
+          </button>
+          <button class="sim-item-btn" onclick="loadSim('wifi', this)">
+            <span>📶 03 — WIFI TAP</span>
+            <span style="font-size: 11px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">Conexión Directa</span>
+          </button>
+          <button class="sim-item-btn" onclick="loadSim('pet', this)">
+            <span>🐾 04 — PET TAG</span>
+            <span style="font-size: 11px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">Mascota Segura</span>
+          </button>
         </div>
 
-        <div class="phone-mockup-frame">
-          <div class="phone-speaker"></div>
-          <div class="phone-screen" id="simulator-screen-target"></div>
+        <div class="phone-mockup">
+          <div class="phone-screen" id="sim-screen">
+            <!-- Dynamic Simulator Screen -->
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRODUCTS CATALOG -->
+  <!-- CATALOG PRODUCTS -->
   <section class="section" id="productos">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Catálogo Oficial</span>
-        <h2 class="section-title">Nuestra Colección de Objetos Inteligentes</h2>
-        <p class="section-subtitle">Diseñados con precisión, tecnología integrada y materiales de primera calidad.</p>
+        <span class="section-tag">Catálogo Inicial</span>
+        <h2 class="section-title">Colección de Objetos Inteligentes</h2>
+        <p class="section-subtitle">Elige tu producto y personalízalo para tu uso personal o negocio.</p>
       </div>
 
       <div class="filter-tabs">
-        <button class="filter-btn active" onclick="filterProducts('all', this)">Todos los Productos</button>
-        <button class="filter-btn" onclick="filterProducts('featured', this)">⭐ Protagonistas</button>
-        <button class="filter-btn" onclick="filterProducts('business', this)">Negocios (B2B)</button>
-        <button class="filter-btn" onclick="filterProducts('personal', this)">Personales & Mascotas</button>
+        <button class="filter-btn active" onclick="filterCat('all', this)">Todos los Productos</button>
+        <button class="filter-btn" onclick="filterCat('featured', this)">⭐ Protagonistas</button>
+        <button class="filter-btn" onclick="filterCat('business', this)">Negocios (B2B)</button>
+        <button class="filter-btn" onclick="filterCat('personal', this)">Personales & Mascotas</button>
       </div>
 
-      <div class="products-grid" id="products-grid"></div>
+      <div class="products-grid" id="products-grid">
+        <!-- Rendered by script -->
+      </div>
     </div>
   </section>
 
-  <!-- TAP FOR BUSINESS -->
+  <!-- BUSINESS B2B -->
   <section class="section" id="negocios" style="background-color: #FAF8F5;">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Soluciones Comerciales</span>
+        <span class="section-tag">Para Empresas y Emprendedores</span>
         <h2 class="section-title">TAP FOR BUSINESS</h2>
-        <p class="section-subtitle">
-          Vendes soluciones inteligentes para elevar la facturación, reputación y experiencia de clientes en tu negocio.
-        </p>
+        <p class="section-subtitle">Kits inteligentes diseñados para restaurantes, clínicas, barberías y hoteles.</p>
       </div>
 
-      <div class="business-card-grid">
-        <div class="business-plan-card">
-          <h3 class="plan-name">Business Review Kit</h3>
-          <p class="plan-desc">Convierte cada visita satisfecha en una reseña de 5 estrellas en tiempo real.</p>
-          <div class="plan-price-row">
-            <span style="font-size: 14px; color: var(--slate-text);">Inversión Única</span>
-            <div class="plan-price"><span style="color: var(--copper-signal); font-size: 24px;">L</span> 650</div>
+      <div class="biz-grid">
+        <div class="biz-card">
+          <h3 style="font-size: 22px; margin-bottom: 6px;">Business Review Kit</h3>
+          <p style="font-size: 14px; color: var(--slate-text); margin-bottom: 20px;">Consigue reseñas de 5 estrellas en Google al instante.</p>
+          <div style="font-size: 32px; font-weight: 700; margin-bottom: 20px; color: var(--graphite-ink);">
+            <span style="color: var(--copper-signal); font-size: 20px;">L</span> 650
           </div>
-          <ul class="plan-items-list">
-            <li class="plan-item">✓ 1x Placa Review TAP Acrílica Premium</li>
-            <li class="plan-item">✓ Chip NFC + Código QR permanente</li>
-            <li class="plan-item">✓ Personalización con el Logo de tu Empresa</li>
-            <li class="plan-item">✓ Enlace directo a Google Reviews</li>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; margin-bottom: 24px;">
+            <li>✓ 1x Placa Review TAP Acrílica con tu Logo</li>
+            <li>✓ Chip NFC ultrarrápido + Código QR grabado</li>
+            <li>✓ Enlace directo a tu ficha de Google Reviews</li>
           </ul>
-          <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="addBusinessKit('biz-review-kit')">
+          <button class="btn btn-outline" style="margin-top: auto;" onclick="addKit('biz-review-kit', 'Business Review Kit', 650)">
             + Agregar Kit al Pedido
           </button>
         </div>
 
-        <div class="business-plan-card premium-kit">
-          <div class="plan-badge">MÁS POPULAR</div>
-          <h3 class="plan-name">Business Starter Kit</h3>
-          <p class="plan-desc">El kit integral para digitalizar mostrador, red WiFi y tarjeta ejecutiva.</p>
-          <div class="plan-price-row">
-            <span style="font-size: 14px; color: var(--slate-text);">Paquete Completo</span>
-            <div class="plan-price"><span style="color: var(--copper-signal); font-size: 24px;">L</span> 1,200</div>
+        <div class="biz-card highlight">
+          <div style="font-size: 11px; font-weight: 700; color: var(--copper-signal); margin-bottom: 6px;">MÁS POPULAR</div>
+          <h3 style="font-size: 22px; margin-bottom: 6px;">Business Starter Kit</h3>
+          <p style="font-size: 14px; color: var(--slate-text); margin-bottom: 20px;">Digitaliza mostrador, red WiFi y tu tarjeta de presentación.</p>
+          <div style="font-size: 32px; font-weight: 700; margin-bottom: 20px; color: var(--graphite-ink);">
+            <span style="color: var(--copper-signal); font-size: 20px;">L</span> 1,200
           </div>
-          <ul class="plan-items-list">
-            <li class="plan-item">✓ 1x Review TAP para mostrador</li>
-            <li class="plan-item">✓ 1x WiFi TAP para conectar clientes</li>
-            <li class="plan-item">✓ 1x TAP CARD ejecutiva de presentación</li>
-            <li class="plan-item">✓ Configuración digital y soporte incluido</li>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; margin-bottom: 24px;">
+            <li>✓ <strong>1x Review TAP</strong> para mostrador/caja</li>
+            <li>✓ <strong>1x WiFi TAP</strong> para conectar clientes</li>
+            <li>✓ <strong>1x TAP CARD</strong> ejecutiva para el dueño</li>
+            <li>✓ Configuración y soporte con tu marca</li>
           </ul>
-          <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="addBusinessKit('biz-starter-kit')">
+          <button class="btn btn-primary" style="margin-top: auto;" onclick="addKit('biz-starter-kit', 'Business Starter Kit', 1200)">
             + Agregar Starter Kit Completo
           </button>
         </div>
@@ -316,29 +410,29 @@
   <section class="section" id="como-funciona">
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Paso a Paso</span>
+        <span class="section-tag">Fácil y Rápido</span>
         <h2 class="section-title">¿Cómo funciona?</h2>
       </div>
       <div class="steps-grid">
         <div class="step-card">
-          <div class="step-number">01 — ELIGE</div>
-          <h3 class="step-title">Elige tu objeto</h3>
-          <p class="step-desc">Selecciona la tarjeta, placa, llavero o identificación que mejor se adapte a tu meta.</p>
+          <div class="step-num">01 — ELIGE</div>
+          <h3 style="font-size: 18px; margin-bottom: 8px;">Elige tu objeto</h3>
+          <p style="font-size: 13px; color: var(--slate-text);">Selecciona tu tarjeta, placa, llavero o identificación de mascota.</p>
         </div>
         <div class="step-card">
-          <div class="step-number">02 — PERSONALIZA</div>
-          <h3 class="step-title">Personaliza tus datos</h3>
-          <p class="step-desc">Agrega tu logo, redes sociales, menú, contacto, red WiFi o perfil médico.</p>
+          <div class="step-num">02 — PERSONALIZA</div>
+          <h3 style="font-size: 18px; margin-bottom: 8px;">Personaliza</h3>
+          <p style="font-size: 13px; color: var(--slate-text);">Envíanos tu logotipo, enlaces de redes, menú o red WiFi.</p>
         </div>
         <div class="step-card">
-          <div class="step-number">03 — TAP</div>
-          <h3 class="step-title">Haz Tap o Escanea</h3>
-          <p class="step-desc">Acerca cualquier smartphone al objeto inteligente o escanea el código QR.</p>
+          <div class="step-num">03 — TAP</div>
+          <h3 style="font-size: 18px; margin-bottom: 8px;">Haz Tap</h3>
+          <p style="font-size: 13px; color: var(--slate-text);">Acerca cualquier smartphone al objeto o escanea el código QR.</p>
         </div>
         <div class="step-card">
-          <div class="step-number">04 — CONNECT</div>
-          <h3 class="step-title">Conecta al instante</h3>
-          <p class="step-desc">Accede directamente a la experiencia digital sin descargar ninguna app.</p>
+          <div class="step-num">04 — CONECTA</div>
+          <h3 style="font-size: 18px; margin-bottom: 8px;">Conecta</h3>
+          <p style="font-size: 13px; color: var(--slate-text);">Tu cliente accede inmediatamente sin descargar ninguna aplicación.</p>
         </div>
       </div>
     </div>
@@ -346,36 +440,32 @@
 
   <!-- CTA -->
   <section class="section section-dark" style="text-align: center;">
-    <div class="container" style="max-width: 800px;">
-      <h2 style="font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 700; margin-bottom: 20px;">
-        El futuro está en los objetos que ya usamos.
-      </h2>
-      <p style="font-size: 19px; color: var(--copper-light); margin-bottom: 36px;">
-        TAPLAB · Smart objects for everyday life.
-      </p>
-      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-        <a href="#productos" class="btn btn-primary" style="padding: 14px 32px;">Comenzar Pedido</a>
-        <button class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="checkoutWhatsApp()">
-          Contactar por WhatsApp
-        </button>
+    <div class="container" style="max-width: 700px;">
+      <h2 style="font-size: 2.6rem; margin-bottom: 16px;">El futuro está en los objetos que ya usamos.</h2>
+      <p style="font-size: 18px; color: var(--copper-light); margin-bottom: 30px;">TAPLAB · Smart objects for everyday life.</p>
+      <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="#productos" class="btn btn-primary" style="padding: 14px 32px;">Hacer Pedido</a>
+        <button class="btn btn-outline" style="color: #FFFFFF; border-color: rgba(255,255,255,0.3);" onclick="orderViaWA()">Contactar por WhatsApp</button>
       </div>
     </div>
   </section>
 
   <!-- CART DRAWER -->
-  <div class="cart-drawer-overlay" id="cart-overlay"></div>
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
-      <div class="cart-title">Tu Pedido TAPLAB</div>
-      <button class="close-cart-btn" id="close-cart-btn">✕</button>
+      <h3 style="font-size: 18px; font-weight: 700;">Tu Pedido TAPLAB</h3>
+      <button onclick="toggleCart()" style="font-size: 20px; color: var(--slate-text);">✕</button>
     </div>
-    <div class="cart-items-container" id="cart-items-container"></div>
-    <div class="cart-footer">
-      <div class="cart-total-row">
-        <span class="cart-total-label">Total Estimado:</span>
-        <span class="cart-total-amount" id="cart-total-display">L 0</span>
+    <div class="cart-body" id="cart-items-body">
+      <!-- Injected by script -->
+    </div>
+    <div class="cart-foot">
+      <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 18px; margin-bottom: 14px;">
+        <span>Total:</span>
+        <span id="cart-total-num">L 0</span>
       </div>
-      <button class="btn btn-primary" style="width: 100%; padding: 14px;" onclick="checkoutWhatsApp()">
+      <button class="btn btn-primary" style="width: 100%;" onclick="orderViaWA()">
         <span>Pedir por WhatsApp</span>
       </button>
     </div>
@@ -384,13 +474,13 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <img src="/assets/images/logo-dark-bg.png" alt="tap lab" style="height: 36px; width: auto; cursor: pointer;" title="TAPLAB">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo-text" id="footer-logo" style="color: #FFFFFF; font-size: 22px;">tap<span>lab</span></div>
           <p>Diseñamos productos físicos que combinan tecnología, personalización y experiencias digitales para la vida cotidiana.</p>
         </div>
         <div>
-          <h4 class="footer-heading">Productos</h4>
+          <h4 style="font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Productos</h4>
           <ul class="footer-links">
             <li><a href="#productos">TAP CARD</a></li>
             <li><a href="#productos">REVIEW TAP</a></li>
@@ -399,7 +489,7 @@
           </ul>
         </div>
         <div>
-          <h4 class="footer-heading">Soluciones</h4>
+          <h4 style="font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Soluciones</h4>
           <ul class="footer-links">
             <li><a href="#negocios">Para Restaurantes</a></li>
             <li><a href="#negocios">Business Review Kit</a></li>
@@ -407,20 +497,288 @@
           </ul>
         </div>
         <div>
-          <h4 class="footer-heading">Atención</h4>
-          <p style="color: #9CA3AF; font-size: 14px; margin-bottom: 14px;">¿Necesitas asesoría o pedidos al por mayor para tu empresa?</p>
-          <button class="btn btn-primary btn-sm" onclick="checkoutWhatsApp()">
-            Escribir por WhatsApp
-          </button>
+          <h4 style="font-size: 14px; margin-bottom: 12px; text-transform: uppercase;">Atención</h4>
+          <p style="margin-bottom: 12px;">¿Requieres cotización corporativa?</p>
+          <button class="btn btn-primary btn-sm" onclick="orderViaWA()">Escribir por WhatsApp</button>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="footer-bot">
         <div>&copy; 2026 TAPLAB. Todos los derechos reservados.</div>
-        <div>Objetos cotidianos. Experiencias inteligentes.</div>
+        <div>Smart objects for everyday life.</div>
       </div>
     </div>
   </footer>
 
-  <script src="/js/app.js"></script>
+  <script>
+    // PRODUCT CATALOG
+    const PRODUCTS = [
+      {
+        id: 'tap-card',
+        num: '01',
+        title: 'TAP CARD',
+        tagline: 'Tu identidad en un solo toque.',
+        category: 'personal',
+        featured: true,
+        starLabel: '🥈 Popular',
+        desc: 'Tarjeta inteligente que comparte tus redes, WhatsApp y contacto vCard al acercarla a un teléfono.',
+        variants: [{ name: 'Basic', price: 250 }, { name: 'Custom', price: 350 }, { name: 'Premium', price: 500 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/hLL8TCOEuarBekA50sPCjehf6W0w8jf5sMHqQIA8eUP4Iqvr9OLtXd-QhjKMV1sXp79kp6v_1afLOwMlyR4hDmljac6bIuELYKLI62c57PHYsxnZM2ehx-oi368myHksuV7GScKoPLJOR5J3ih43uBnBpFbZhP-DzZKJUN1bQbldTSIBGRCv4ihX-qfVhOAw?purpose=fullsize'
+      },
+      {
+        id: 'review-tap',
+        num: '02',
+        title: 'REVIEW TAP',
+        tagline: 'Convierte clientes felices en reseñas.',
+        category: 'business',
+        featured: true,
+        starLabel: '🔥 Producto Estrella',
+        desc: 'Placa NFC + QR para mostrador. Los clientes tocan con su celular y van directo a dejar 5 estrellas en Google.',
+        variants: [{ name: 'Acrílico', price: 450 }, { name: 'Stand con Logo', price: 650 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/nD8vWJ8auheIc6ahPeFFN8Vmod1wg5dOi0PA9Jq32PF9wR7F_h7IRdLKUnFiB0Gd-zndV5YGaH40NIPZ1IMhu8ARcnMLsb5hYsjKa4IdfCl2DCA6SLG19SjdCOTUhwS-9qwYWe8qrDVlghsEWMiggMhs7z-XIh970-8a6SmkI6j8IYEU1EFCaCmJQ2Fer_r-?purpose=fullsize'
+      },
+      {
+        id: 'wifi-tap',
+        num: '03',
+        title: 'WIFI TAP',
+        tagline: 'Comparte tu WiFi sin decir la contraseña.',
+        category: 'business',
+        featured: false,
+        desc: 'Placa inteligente para mesas u oficinas. Un toque conecta automáticamente a tus invitados a la red.',
+        variants: [{ name: 'Mini', price: 250 }, { name: 'Stand', price: 400 }, { name: 'Custom Pro', price: 550 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/nWivvTFvJKHVs8kSFUJCevF2_tEMxcpvZIHTKeX9vhwI0sIimfJqpR3UpMKjPBMlbr71dtv2XQ5nzqS0YekTZsZXBYIwVvi8ICo8zIK1ohriLKKneZL1LNGi0IWKHsKIFdtCfPP6kOagHgbGaXxPbqwOu7ee5VkKtlHNU_fQ4HjX4c1rG8UbhghHcWlxKXKp?purpose=fullsize'
+      },
+      {
+        id: 'pet-tag',
+        num: '04',
+        title: 'PET TAG',
+        tagline: 'Si se pierde, ayúdalo a volver.',
+        category: 'personal',
+        featured: true,
+        starLabel: '🐾 Emocional',
+        desc: 'Placa inteligente de collar con NFC + QR. Quien lo encuentre puede llamarte o escribirte a WhatsApp.',
+        variants: [{ name: 'Round Tag', price: 250 }, { name: 'Collar Pro', price: 400 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/u-T50k4cgFPpbB1EU-sS3GmUyd8yh9j4aCO2A-lE2bWCjEV2xt1mMsWmq5cyXnJoBa87_6E9eoe0srn0SwlWYuJe_tGdL6vXt0M4eIiGUo-EfEOIgc5V_gkwbAPAxdQ0TCxLYr2CLvKOPtyu4A6V2AQIYhax39IgoPfN5mNUd_fNTPy7xvJBK7mgewaemqE0?purpose=fullsize'
+      },
+      {
+        id: 'smart-key',
+        num: '05',
+        title: 'SMART KEY',
+        tagline: 'Más que un llavero.',
+        category: 'personal',
+        featured: false,
+        desc: 'Llavero inteligente compacto para compartir tus redes sociales o contacto en cualquier momento.',
+        variants: [{ name: 'Basic', price: 180 }, { name: 'Custom', price: 280 }, { name: 'Premium', price: 380 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/IKnZoKF48XtO513h8p1Ay1Iwfcn7oxKHe3q-TAuCBjqSbctazQPOuFvn6RJwecsj31OkGftsSYa06Zv3HDD_NCr712SSFXWRtebimfGBF_IGKDakC1foAGPbd2uv-QbacTQS4md8W0skEWiIeqbRyNHuloFeHe8DfUl3sBsfyjES_qCEpqLStghmais5QGLs?purpose=fullsize'
+      },
+      {
+        id: 'emergency-tag',
+        num: '06',
+        title: 'EMERGENCY TAG',
+        tagline: 'Tu información importante, siempre contigo.',
+        category: 'personal',
+        featured: false,
+        desc: 'Accesorio NFC + QR diseñado para emergencias médicas, tipo de sangre y contactos familiares de auxilio.',
+        variants: [{ name: 'Standard', price: 250 }, { name: 'Medic Pro', price: 350 }],
+        selectedVar: 0,
+        img: 'https://images.openai.com/static-rsc-4/-xLuYdC_AAS1lu9Cx9AD0ovS3wd-GvXxU8DgAiNv7dkf2B625U3maOJc1CARxouoVy2SGGNHmovS_MKdalaYS8a-3E3LJKQFpn7sUpiddTPKOqx1_icAKLdM1uoQ-zk30I43EOas8t6JvUCYJ8DmMNfycfLdhazOvUBtQ9mT8uq3vm6K5XsT1KUACxffUxUH?purpose=fullsize'
+      }
+    ];
+
+    let cart = [];
+
+    // Render Products
+    function renderGrid(cat = 'all') {
+      const grid = document.getElementById('products-grid');
+      const filtered = PRODUCTS.filter(p => cat === 'all' ? true : (cat === 'featured' ? p.featured : p.category === cat));
+      
+      grid.innerHTML = filtered.map(p => {
+        const v = p.variants[p.selectedVar];
+        return `
+          <div class="product-card">
+            ${p.starLabel ? `<div class="product-badge">${p.starLabel}</div>` : ''}
+            <div class="product-img-box">
+              <img src="${p.img}" alt="${p.title}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'200\\'><rect fill=\\'%23171A1F\\' width=\\'200\\' height=\\'200\\'/><text fill=\\'%23C1793B\\' x=\\'50%\\' y=\\'50%\\' font-family=\\'sans-serif\\' font-weight=\\'bold\\' text-anchor=\\'middle\\' dy=\\'.3em\\'>TAPLAB</text></svg>'">
+            </div>
+            <div class="product-info">
+              <span style="font-size: 11px; font-weight: 700; color: var(--copper-signal);">${p.num} — ${p.category.toUpperCase()}</span>
+              <h3 class="product-title">${p.title}</h3>
+              <div class="product-tagline">${p.tagline}</div>
+              <p class="product-desc">${p.desc}</p>
+              
+              <div class="variants-box">
+                <span style="font-size: 11px; font-weight: 700; color: var(--slate-text);">Variante:</span>
+                <div class="variants-row">
+                  ${p.variants.map((varItem, idx) => `
+                    <button class="var-btn ${idx === p.selectedVar ? 'active' : ''}" onclick="setVar('${p.id}', ${idx})">
+                      ${varItem.name}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="product-foot">
+                <div>
+                  <span style="font-size: 10px; text-transform: uppercase; color: var(--slate-text);">Precio</span>
+                  <div class="price-num"><span>L</span> ${v.price}</div>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">+ Agregar</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setVar(pid, idx) {
+      const p = PRODUCTS.find(x => x.id === pid);
+      if (p) { p.selectedVar = idx; renderGrid(window.currentCat || 'all'); }
+    }
+
+    function filterCat(cat, btn) {
+      window.currentCat = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid(cat);
+    }
+
+    // Simulator
+    const SIMS = {
+      card: `
+        <div style="width:60px; height:60px; border-radius:50%; background:var(--graphite-ink); color:white; display:flex; align-items:center; justify-content:center; margin:10px auto; font-weight:700; font-size:20px;">TL</div>
+        <h4 style="font-size:16px; margin-bottom:2px;">Mauricio Reyes</h4>
+        <p style="font-size:11px; color:var(--copper-signal); font-weight:600; margin-bottom:14px;">Fundador & Creador Digital</p>
+        <button style="width:100%; padding:10px; background:#25D366; color:white; border-radius:6px; font-weight:600; font-size:12px; margin-bottom:8px;">💬 WhatsApp Directo</button>
+        <button style="width:100%; padding:10px; background:#E1306C; color:white; border-radius:6px; font-weight:600; font-size:12px; margin-bottom:8px;">📸 Instagram</button>
+        <button style="width:100%; padding:10px; background:var(--graphite-ink); color:white; border-radius:6px; font-weight:600; font-size:12px;">💾 Guardar vCard</button>
+      `,
+      review: `
+        <div style="font-size:20px; color:#4285F4; font-weight:700; margin:14px 0 4px;">Google</div>
+        <h4 style="font-size:15px; margin-bottom:4px;">Café & Bistro Central</h4>
+        <p style="font-size:11px; color:#6B7280; margin-bottom:14px;">Califica tu experiencia:</p>
+        <div style="font-size:24px; color:#FBBC05; margin-bottom:16px;">★★★★★</div>
+        <button style="width:100%; padding:10px; background:var(--copper-signal); color:white; border-radius:6px; font-weight:600; font-size:12px;">Dejar Reseña en 1 Clic</button>
+      `,
+      wifi: `
+        <div style="font-size:32px; margin:14px 0 8px;">📶</div>
+        <h4 style="font-size:15px;">Conectar a la Red</h4>
+        <p style="font-size:12px; color:var(--copper-signal); font-weight:700; margin:4px 0 14px;">"TAPLAB_Guest_5G"</p>
+        <button style="width:100%; padding:10px; background:var(--graphite-ink); color:white; border-radius:6px; font-weight:600; font-size:12px;">Unirse sin Contraseña</button>
+      `,
+      pet: `
+        <div style="font-size:32px; margin:10px 0 4px;">🐶</div>
+        <h4 style="font-size:16px; margin:0;">Rocky</h4>
+        <span style="font-size:10px; background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:4px; font-weight:700;">¡Estoy extraviado!</span>
+        <p style="font-size:11px; color:#4B5563; margin:12px 0;">"Por favor avisa a mi dueño para que venga por mí."</p>
+        <button style="width:100%; padding:10px; background:#25D366; color:white; border-radius:6px; font-weight:600; font-size:12px;">📞 Llamar al Dueño</button>
+      `
+    };
+
+    function loadSim(key, btn) {
+      if (btn) {
+        document.querySelectorAll('.sim-item-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      document.getElementById('sim-screen').innerHTML = SIMS[key] || SIMS.card;
+    }
+
+    // Cart
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('active');
+      document.getElementById('cart-overlay').classList.toggle('active');
+    }
+
+    function addToCart(pid) {
+      const p = PRODUCTS.find(x => x.id === pid);
+      if (!p) return;
+      const v = p.variants[p.selectedVar];
+      const key = `${p.id}-${v.name}`;
+      const item = cart.find(x => x.key === key);
+      if (item) item.qty++;
+      else cart.push({ key, title: p.title, varName: v.name, price: v.price, qty: 1 });
+      updateCart();
+      toggleCart();
+    }
+
+    function addKit(id, title, price) {
+      const item = cart.find(x => x.key === id);
+      if (item) item.qty++;
+      else cart.push({ key: id, title, varName: 'Kit Completo', price, qty: 1 });
+      updateCart();
+      toggleCart();
+    }
+
+    function updateCart() {
+      const count = cart.reduce((a, b) => a + b.qty, 0);
+      const total = cart.reduce((a, b) => a + (b.price * b.qty), 0);
+      document.getElementById('cart-count').textContent = count;
+      document.getElementById('cart-total-num').textContent = `L ${total.toLocaleString()}`;
+
+      const body = document.getElementById('cart-items-body');
+      if (cart.length === 0) {
+        body.innerHTML = '<p style="text-align:center; color:var(--slate-text); padding:40px 0;">Tu carrito está vacío.</p>';
+        return;
+      }
+      body.innerHTML = cart.map(i => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border-light);">
+          <div>
+            <div style="font-weight:700; font-size:14px;">${i.title}</div>
+            <div style="font-size:12px; color:var(--slate-text);">${i.varName} x${i.qty}</div>
+          </div>
+          <div style="font-weight:700; color:var(--copper-signal);">L ${i.price * i.qty}</div>
+        </div>
+      `).join('');
+    }
+
+    function orderViaWA() {
+      let msg = '¡Hola TAPLAB! 👋 Quiero hacer el siguiente pedido:\n\n';
+      let total = 0;
+      if (cart.length === 0) {
+        msg += 'Me gustaría recibir información sobre los productos inteligentes TAPLAB.';
+      } else {
+        cart.forEach((i, idx) => {
+          const sub = i.price * i.qty;
+          total += sub;
+          msg += `${idx + 1}. *${i.title}* (${i.varName}) x${i.qty} = L ${sub}\n`;
+        });
+        msg += `\n*TOTAL: L ${total.toLocaleString()}*\n¿Me dan los datos de pago y personalización?`;
+      }
+      window.open(`https://wa.me/50499999999?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Secret Admin Triggers
+    let clicks = 0;
+    let clickTimer;
+    function triggerAdmin() {
+      window.location.href = 'crm.html';
+    }
+
+    document.getElementById('header-logo').addEventListener('click', () => {
+      clicks++;
+      clearTimeout(clickTimer);
+      if (clicks >= 3) triggerAdmin();
+      clickTimer = setTimeout(() => clicks = 0, 800);
+    });
+
+    document.getElementById('footer-logo').addEventListener('click', () => {
+      clicks++;
+      clearTimeout(clickTimer);
+      if (clicks >= 3) triggerAdmin();
+      clickTimer = setTimeout(() => clicks = 0, 800);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) triggerAdmin();
+    });
+
+    // Init
+    document.getElementById('cart-toggle-btn').addEventListener('click', toggleCart);
+    renderGrid('all');
+    loadSim('card');
+  </script>
 </body>
 </html>

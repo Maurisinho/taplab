@@ -4,435 +4,437 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TAPLAB CRM — Suite de Operaciones</title>
-  <meta name="description" content="Acceso privado exclusivo para gestión de pedidos, clientes B2B/B2C, inventario y generador de perfiles NFC para TAPLAB.">
   
-  <!-- PWA meta tags -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#171A1F">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="TAPLAB CRM">
-  <link rel="apple-touch-icon" href="/assets/images/isotype-dark.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/assets/images/isotype-dark.png">
+  <link rel="icon" type="image/png" href="assets/images/isotype-dark.png">
   
-  <!-- Google Fonts: Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/css/crm.css">
+  <style>
+    :root {
+      --graphite-ink: #171A1F;
+      --graphite-border: #2D323E;
+      --copper-signal: #C1793B;
+      --copper-light: #E3A868;
+      --copper-subtle: rgba(193, 121, 59, 0.15);
+      --paper-white: #F7F6F2;
+      --slate-text: #6B7280;
+      --slate-light: #9CA3AF;
+      --sidebar-width: 240px;
+      --font-main: 'Space Grotesk', -apple-system, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --transition: all 0.2s ease;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-main); background-color: var(--paper-white); color: var(--graphite-ink); min-height: 100vh; display: flex; }
+
+    /* Lock Screen */
+    .lock-screen { position: fixed; inset: 0; background: var(--graphite-ink); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .lock-screen.unlocked { display: none; }
+    .lock-box { background: #20242C; border: 1px solid var(--graphite-border); border-radius: var(--radius-lg); padding: 40px; max-width: 380px; width: 100%; text-align: center; color: #FFFFFF; }
+    .pin-row { display: flex; justify-content: center; gap: 10px; margin: 24px 0; }
+    .pin-digit { width: 50px; height: 56px; font-size: 24px; font-weight: 700; text-align: center; background: #171A1F; border: 2px solid var(--graphite-border); border-radius: var(--radius-sm); color: var(--copper-light); }
+    .pin-digit:focus { outline: none; border-color: var(--copper-signal); }
+
+    /* Sidebar */
+    .sidebar { width: var(--sidebar-width); background: var(--graphite-ink); color: #FFFFFF; padding: 24px 16px; display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; }
+    .sidebar-brand { font-size: 22px; font-weight: 700; padding: 0 8px 20px; border-bottom: 1px solid var(--graphite-border); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .sidebar-brand span { color: var(--copper-signal); }
+    .nav-btn { width: 100%; padding: 12px 14px; color: var(--slate-light); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; border: none; background: none; }
+    .nav-btn:hover { background: rgba(255,255,255,0.05); color: #FFFFFF; }
+    .nav-btn.active { background: var(--copper-signal); color: #FFFFFF; }
+
+    /* Main Content */
+    .main { margin-left: var(--sidebar-width); flex-grow: 1; padding: 30px 40px; max-width: calc(100vw - var(--sidebar-width)); }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .metric-card { background: #FFFFFF; border-radius: var(--radius-md); padding: 20px; border: 1px solid rgba(23,26,31,0.08); }
+    .metric-val { font-size: 26px; font-weight: 700; margin: 4px 0; color: var(--graphite-ink); }
+
+    /* Tables & Kanban */
+    .table-card { background: #FFFFFF; border-radius: var(--radius-md); border: 1px solid rgba(23,26,31,0.08); overflow: hidden; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th { background: #FAF8F5; padding: 12px 20px; font-size: 12px; font-weight: 700; color: var(--slate-text); text-transform: uppercase; border-bottom: 1px solid rgba(23,26,31,0.08); }
+    .data-table td { padding: 14px 20px; font-size: 14px; border-bottom: 1px solid rgba(23,26,31,0.05); }
+
+    .kanban-board { display: grid; grid-template-columns: repeat(5, minmax(240px, 1fr)); gap: 14px; overflow-x: auto; padding-bottom: 20px; }
+    .kanban-col { background: #EFECE6; border-radius: var(--radius-md); padding: 14px; min-height: 480px; display: flex; flex-direction: column; gap: 10px; }
+    .order-card { background: #FFFFFF; border-radius: var(--radius-sm); padding: 14px; border: 1px solid rgba(23,26,31,0.08); box-shadow: var(--shadow-sm); cursor: pointer; }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; font-size: 14px; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; border: none; font-family: inherit; }
+    .btn-primary { background: var(--copper-signal); color: #FFFFFF; }
+    .btn-outline { border: 1px solid rgba(23,26,31,0.15); background: #FFFFFF; }
+
+    .pill { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+    .pill-new { background: #DBEAFE; color: #1E40AF; }
+    .pill-prod { background: #FEF3C7; color: #92400E; }
+    .pill-done { background: #D1FAE5; color: #065F46; }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; padding: 14px 6px; }
+      .sidebar span { display: none; }
+      .main { margin-left: 60px; padding: 18px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- MASTER PIN LOCK SCREEN (PROTECCIÓN PRIVADA) -->
+  <!-- LOCK SCREEN (PIN: 1234) -->
   <div class="lock-screen" id="lock-screen">
     <div class="lock-box">
-      <img src="/assets/images/logo-dark-bg.png" alt="tap lab" class="lock-logo">
-      <h2 class="lock-title">Acceso Restringido</h2>
-      <p class="lock-desc">Ingresa tu PIN de Administrador (PIN por defecto: <strong>1234</strong>)</p>
-      
-      <div class="pin-inputs-row">
-        <input type="password" maxlength="1" class="pin-digit" autofocus pattern="[0-9]*" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-digit" pattern="[0-9]*" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-digit" pattern="[0-9]*" inputmode="numeric">
-        <input type="password" maxlength="1" class="pin-digit" pattern="[0-9]*" inputmode="numeric">
+      <div style="font-size: 24px; font-weight: 700; margin-bottom: 6px;">tap<span style="color:var(--copper-signal)">lab</span></div>
+      <p style="font-size: 13px; color: var(--slate-light); margin-bottom: 20px;">Acceso Privado (PIN: <strong>1234</strong>)</p>
+      <div class="pin-row">
+        <input type="password" maxlength="1" class="pin-digit" autofocus>
+        <input type="password" maxlength="1" class="pin-digit">
+        <input type="password" maxlength="1" class="pin-digit">
+        <input type="password" maxlength="1" class="pin-digit">
       </div>
-
-      <div class="lock-error" id="lock-error">❌ PIN incorrecto. Intenta nuevamente.</div>
+      <div id="pin-error" style="color: #EF4444; font-size: 12px; display: none;">PIN incorrecto. Intenta de nuevo.</div>
     </div>
   </div>
 
-  <!-- SIDEBAR NAVIGATION -->
-  <aside class="crm-sidebar">
-    <div class="crm-brand">
-      <img src="/assets/images/logo-dark-bg.png" alt="tap lab">
-      <span class="crm-badge">ADMIN APP</span>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div>tap<span>lab</span></div>
+      <span style="font-size: 10px; background: var(--copper-signal); padding: 2px 6px; border-radius: 4px;">CRM</span>
     </div>
 
-    <ul class="nav-menu">
-      <li>
-        <button class="nav-item-btn active" data-tab="tab-dashboard">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-          <span>Dashboard</span>
-        </button>
-      </li>
-      <li>
-        <button class="nav-item-btn" data-tab="tab-kanban">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"></path></svg>
-          <span>Pipeline Kanban</span>
-        </button>
-      </li>
-      <li>
-        <button class="nav-item-btn" data-tab="tab-orders">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-          <span>Todos los Pedidos</span>
-        </button>
-      </li>
-      <li>
-        <button class="nav-item-btn" data-tab="tab-customers">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span>Directorio Clientes</span>
-        </button>
-      </li>
-      <li>
-        <button class="nav-item-btn" data-tab="tab-nfc-qr">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><path d="M14 14h3v3h-3z"></path></svg>
-          <span>Programador NFC & QR</span>
-        </button>
-      </li>
-      <li>
-        <button class="nav-item-btn" data-tab="tab-inventory">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-          <span>Inventario Insumos</span>
-        </button>
-      </li>
-    </ul>
+    <button class="nav-btn active" onclick="switchTab('dashboard', this)">📊 <span>Dashboard</span></button>
+    <button class="nav-btn" onclick="switchTab('kanban', this)">📋 <span>Pipeline Kanban</span></button>
+    <button class="nav-btn" onclick="switchTab('orders', this)">📦 <span>Pedidos</span></button>
+    <button class="nav-btn" onclick="switchTab('customers', this)">👥 <span>Clientes</span></button>
+    <button class="nav-btn" onclick="switchTab('nfc', this)">⚡ <span>Programador NFC</span></button>
+    <button class="nav-btn" onclick="switchTab('inventory', this)">🏷️ <span>Inventario</span></button>
 
-    <div class="sidebar-footer">
-      <button class="install-app-btn" id="install-pwa-btn" onclick="installApp()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        <span>Instalar como App (.app)</span>
-      </button>
-      <button class="btn-lock" onclick="lockCRM()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        <span>Bloquear CRM</span>
-      </button>
+    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--graphite-border);">
+      <button class="nav-btn" onclick="lockApp()" style="color:#EF4444;">🔒 <span>Bloquear</span></button>
     </div>
   </aside>
 
-  <!-- MAIN VIEW -->
-  <main class="crm-main">
-    
-    <header class="top-bar">
+  <!-- MAIN -->
+  <main class="main">
+    <div class="top-bar">
       <div>
-        <h1 class="page-title">TAPLAB Operations & CRM</h1>
-        <p class="page-subtitle">Panel privado de producción, clientes y programación de chips NFC</p>
+        <h1 style="font-size: 24px; font-weight: 700;">TAPLAB Operations & CRM</h1>
+        <p style="font-size: 13px; color: var(--slate-text);">Panel de control de producción y clientes</p>
       </div>
-      <div class="top-actions">
-        <button class="btn btn-primary" onclick="openNewOrderModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          <span>+ Nuevo Pedido</span>
-        </button>
-      </div>
-    </header>
+      <button class="btn btn-primary" onclick="newOrderPrompt()">+ Nuevo Pedido</button>
+    </div>
 
-    <!-- TAB 1: DASHBOARD -->
-    <section class="tab-content active" id="tab-dashboard">
+    <!-- DASHBOARD -->
+    <section class="tab-view active" id="tab-dashboard">
       <div class="metrics-grid">
         <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Ingresos Totales</span>
-            <div class="metric-icon">💰</div>
-          </div>
-          <div class="metric-value" id="metric-revenue">L 0</div>
-          <div class="metric-trend">↑ 24% facturación</div>
+          <div style="font-size: 12px; color: var(--slate-text); font-weight: 700; text-transform: uppercase;">Ingresos Totales</div>
+          <div class="metric-val" id="metric-rev">L 4,730</div>
+          <div style="font-size: 12px; color: #10B981; font-weight: 600;">↑ 5 pedidos activos</div>
         </div>
-
         <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Pedidos en Proceso</span>
-            <div class="metric-icon">⚡</div>
-          </div>
-          <div class="metric-value" id="metric-active-orders">0</div>
-          <div class="metric-trend" style="color:var(--copper-signal);">En producción / envío</div>
+          <div style="font-size: 12px; color: var(--slate-text); font-weight: 700; text-transform: uppercase;">Clientes B2B</div>
+          <div class="metric-val" id="metric-b2b">60%</div>
+          <div style="font-size: 12px; color: var(--copper-signal);">Restaurantes & Clínicas</div>
         </div>
-
         <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Clientes Registrados</span>
-            <div class="metric-icon">👥</div>
-          </div>
-          <div class="metric-value" id="metric-clients">0</div>
-          <div class="metric-trend">B2B & B2C activos</div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Segmento Líder</span>
-            <div class="metric-icon">🏢</div>
-          </div>
-          <div class="metric-value" id="metric-b2b-ratio">0%</div>
-          <div class="metric-trend" style="color:var(--copper-signal);">Review Tap & Kits B2B</div>
+          <div style="font-size: 12px; color: var(--slate-text); font-weight: 700; text-transform: uppercase;">Chips en Stock</div>
+          <div class="metric-val" id="metric-stock">350</div>
+          <div style="font-size: 12px; color: #10B981;">NTAG213 / NTAG215</div>
         </div>
       </div>
 
       <div class="table-card">
-        <div class="table-header-bar">
-          <h3 style="font-size:16px; font-weight:700;">Últimos Pedidos Registrados</h3>
-          <button class="btn btn-outline btn-sm" onclick="document.querySelector('[data-tab=tab-orders]').click()">Ver Todos</button>
-        </div>
+        <div style="padding: 16px 20px; font-weight: 700; border-bottom: 1px solid rgba(23,26,31,0.08);">Últimos Pedidos</div>
         <table class="data-table">
           <thead>
             <tr>
-              <th>ID Pedido</th>
+              <th>ID</th>
               <th>Cliente</th>
               <th>Producto</th>
               <th>Total</th>
               <th>Estado</th>
             </tr>
           </thead>
-          <tbody id="dashboard-recent-orders"></tbody>
+          <tbody id="dash-orders-tbody">
+            <!-- Dynamic -->
+          </tbody>
         </table>
       </div>
     </section>
 
-    <!-- TAB 2: PIPELINE KANBAN -->
-    <section class="tab-content" id="tab-kanban">
-      <div class="kanban-board">
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-title"><span style="color:#3B82F6;">●</span> Nuevos</span>
-            <span class="col-badge" id="badge-new">0</span>
-          </div>
-          <div class="kanban-cards-container" id="col-cards-new"></div>
-        </div>
-
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-title"><span style="color:#8B5CF6;">●</span> Diseño & Logo</span>
-            <span class="col-badge" id="badge-design">0</span>
-          </div>
-          <div class="kanban-cards-container" id="col-cards-design"></div>
-        </div>
-
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-title"><span style="color:#F59E0B;">●</span> Grabado NFC</span>
-            <span class="col-badge" id="badge-production">0</span>
-          </div>
-          <div class="kanban-cards-container" id="col-cards-production"></div>
-        </div>
-
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-title"><span style="color:#06B6D4;">●</span> Listo / Envío</span>
-            <span class="col-badge" id="badge-shipping">0</span>
-          </div>
-          <div class="kanban-cards-container" id="col-cards-shipping"></div>
-        </div>
-
-        <div class="kanban-col">
-          <div class="kanban-col-header">
-            <span class="kanban-title"><span style="color:#10B981;">●</span> Entregado</span>
-            <span class="col-badge" id="badge-completed">0</span>
-          </div>
-          <div class="kanban-cards-container" id="col-cards-completed"></div>
-        </div>
+    <!-- KANBAN -->
+    <section class="tab-view" id="tab-kanban">
+      <div class="kanban-board" id="kanban-board">
+        <!-- Rendered by script -->
       </div>
     </section>
 
-    <!-- TAB 3: ORDERS TABLE -->
-    <section class="tab-content" id="tab-orders">
+    <!-- ORDERS -->
+    <section class="tab-view" id="tab-orders">
       <div class="table-card">
-        <div class="table-header-bar">
-          <h3 style="font-size:16px; font-weight:700;">Historial Completo de Pedidos</h3>
-          <input type="text" class="search-input" placeholder="Buscar por ID, cliente o producto..." oninput="renderOrdersTable(this.value)">
-        </div>
+        <div style="padding: 16px 20px; font-weight: 700; border-bottom: 1px solid rgba(23,26,31,0.08);">Todos los Pedidos</div>
         <table class="data-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Cliente</th>
-              <th>Producto & Variante</th>
-              <th>Cant.</th>
+              <th>Producto</th>
               <th>Total</th>
-              <th>Fecha</th>
               <th>Estado</th>
-              <th>Acción</th>
+              <th>WhatsApp</th>
             </tr>
           </thead>
-          <tbody id="orders-table-body"></tbody>
+          <tbody id="all-orders-tbody"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- TAB 4: CUSTOMERS DIRECTORY -->
-    <section class="tab-content" id="tab-customers">
+    <!-- CUSTOMERS -->
+    <section class="tab-view" id="tab-customers">
       <div class="table-card">
-        <div class="table-header-bar">
-          <h3 style="font-size:16px; font-weight:700;">Directorio de Clientes B2B & B2C</h3>
-          <input type="text" class="search-input" placeholder="Buscar cliente por nombre o teléfono..." oninput="renderCustomersTable(this.value)">
-        </div>
+        <div style="padding: 16px 20px; font-weight: 700; border-bottom: 1px solid rgba(23,26,31,0.08);">Directorio de Clientes</div>
         <table class="data-table">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nombre / Empresa</th>
-              <th>Segmento</th>
+              <th>Cliente / Empresa</th>
+              <th>Tipo</th>
               <th>Teléfono</th>
-              <th>Email</th>
-              <th>Ciudad</th>
-              <th>Pedidos</th>
               <th>Total Comprado</th>
             </tr>
           </thead>
-          <tbody id="customers-table-body"></tbody>
+          <tbody id="cust-tbody"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- TAB 5: NFC & QR PROGRAMMER -->
-    <section class="tab-content" id="tab-nfc-qr">
-      <div class="generator-grid">
-        <div class="config-box">
-          <h3 style="font-size:18px; font-weight:700; margin-bottom:16px;">Configuración de Enlace NFC</h3>
-          
-          <div class="form-group">
-            <label class="form-label">Tipo de Experiencia Digital:</label>
-            <select class="form-control" id="qr-type-select">
-              <option value="review">⭐ Google Review TAP (Reseñas 5 Estrellas)</option>
-              <option value="vcard">🪪 TAP CARD (Perfil Profesional & Redes)</option>
-              <option value="wifi">📶 WIFI TAP (Conexión Directa a Red)</option>
-              <option value="pet">🐾 PET TAG (Ficha de Mascota & Contacto)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">URL o Payload a Grabar en el Chip:</label>
-            <input type="text" class="form-control" id="qr-target-url" value="https://g.page/r/taplab-reviews/review">
-          </div>
-
-          <button class="btn btn-primary" id="generate-qr-btn" style="width:100%;">
-            ⚡ Actualizar Código QR & Enlace
-          </button>
-        </div>
-
-        <div class="qr-preview-box">
-          <h4 style="font-size:16px; font-weight:700;">Código QR para Grabado</h4>
-          <p style="font-size:13px; color:var(--slate-text); margin-top:4px;">Listo para impresión láser o estampado físico.</p>
-          <div class="qr-canvas-holder" id="qr-canvas-holder"></div>
-          <span style="font-size:12px; color:var(--copper-signal); font-weight:600;">Compatible con Chip NTAG213 / NTAG215</span>
+    <!-- NFC PROGRAMMER -->
+    <section class="tab-view" id="tab-nfc">
+      <div style="background:#FFFFFF; border-radius:var(--radius-md); padding:30px; border:1px solid rgba(23,26,31,0.08); max-width:600px;">
+        <h3 style="margin-bottom: 16px;">Generador de Enlace NFC & QR</h3>
+        <label style="display:block; font-size:13px; font-weight:700; margin-bottom:6px;">URL a Grabar en el Chip:</label>
+        <input type="text" id="nfc-url" value="https://g.page/r/taplab/review" style="width:100%; padding:10px; border-radius:6px; border:1px solid #CCC; margin-bottom:14px;">
+        <button class="btn btn-primary" onclick="genQR()">Generar Código QR</button>
+        <div id="qr-output" style="margin-top:20px; text-align:center;">
+          <!-- QR Image -->
         </div>
       </div>
     </section>
 
-    <!-- TAB 6: INVENTORY -->
-    <section class="tab-content" id="tab-inventory">
+    <!-- INVENTORY -->
+    <section class="tab-view" id="tab-inventory">
       <div class="table-card">
-        <div class="table-header-bar">
-          <h3 style="font-size:16px; font-weight:700;">Control de Insumos & Componentes</h3>
-        </div>
+        <div style="padding: 16px 20px; font-weight: 700; border-bottom: 1px solid rgba(23,26,31,0.08);">Stock de Insumos</div>
         <table class="data-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Material / Insumo</th>
-              <th>Categoría</th>
-              <th>Stock Actual</th>
-              <th>Stock Mínimo</th>
+              <th>Material</th>
+              <th>Stock</th>
               <th>Costo Unit.</th>
-              <th>Ajuste Rápido</th>
+              <th>Ajuste</th>
             </tr>
           </thead>
-          <tbody id="inventory-table-body"></tbody>
+          <tbody id="inv-tbody"></tbody>
         </table>
       </div>
     </section>
-
   </main>
 
-  <!-- MODAL: EDIT ORDER -->
-  <div class="modal-overlay" id="order-modal">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h3 class="modal-title">Editar Pedido <span id="modal-order-id" style="color:var(--copper-signal);"></span></h3>
-        <button class="btn btn-outline btn-sm" onclick="closeOrderModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Cliente / Negocio:</label>
-          <input type="text" class="form-control" id="edit-order-client">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Teléfono WhatsApp:</label>
-          <input type="text" class="form-control" id="edit-order-phone">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Producto:</label>
-          <input type="text" class="form-control" id="edit-order-product" readonly>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Estado de Producción:</label>
-          <select class="form-control" id="edit-order-status">
-            <option value="new">Nuevo Pedido</option>
-            <option value="design">Diseño & Personalización</option>
-            <option value="production">Grabado & Programación NFC</option>
-            <option value="shipping">Listo para Envío / Entrega</option>
-            <option value="completed">Entregado & Completado</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total en Lempiras (L):</label>
-          <input type="number" class="form-control" id="edit-order-total">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Notas de Grabado & Enlaces:</label>
-          <textarea class="form-control" id="edit-order-notes" rows="3"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a id="modal-wa-direct" href="#" target="_blank" class="btn btn-outline" style="color:#25D366; border-color:#25D366;">
-          <span>💬 Avisar por WhatsApp</span>
-        </a>
-        <button class="btn btn-primary" onclick="saveOrderChanges()">Guardar Cambios</button>
-      </div>
-    </div>
-  </div>
+  <script>
+    // DATA
+    let orders = [
+      { id: 'TL-1082', client: 'Restaurante La Cumbre', phone: '50498765432', product: 'Review TAP (Acrílico)', total: 1950, status: 'prod', date: '2026-09-05' },
+      { id: 'TL-1083', client: 'Dra. Sofía Martínez', phone: '50495123456', product: 'TAP CARD Pro Metal', total: 500, status: 'design', date: '2026-09-06' },
+      { id: 'TL-1084', client: 'Carlos Mendizábal', phone: '50499887766', product: 'PET TAG Smart Collar', total: 800, status: 'new', date: '2026-09-06' },
+      { id: 'TL-1085', client: 'The Barber Club', phone: '50494443322', product: 'Business Starter Kit', total: 1200, status: 'shipping', date: '2026-09-04' },
+      { id: 'TL-1086', client: 'Mariana Pineda', phone: '50497771122', product: 'SMART KEY Custom', total: 280, status: 'done', date: '2026-09-02' }
+    ];
 
-  <!-- MODAL: NEW ORDER -->
-  <div class="modal-overlay" id="new-order-modal">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h3 class="modal-title">+ Registrar Nuevo Pedido</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeNewOrderModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Nombre del Cliente / Empresa:</label>
-          <input type="text" class="form-control" id="new-order-client" required placeholder="Ej: Café Central / Juan Pérez">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Teléfono (con código de país):</label>
-          <input type="text" class="form-control" id="new-order-phone" required placeholder="Ej: 50499887766">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tipo de Cliente:</label>
-          <select class="form-control" id="new-order-type">
-            <option value="B2B">B2B (Empresa / Negocio)</option>
-            <option value="B2C">B2C (Consumo Personal)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Producto:</label>
-          <select class="form-control" id="new-order-product">
-            <option value="Review TAP">02 — Review TAP (L 450 - L 650)</option>
-            <option value="TAP CARD">01 — TAP CARD (L 250 - L 500)</option>
-            <option value="WiFi TAP">03 — WiFi TAP (L 250 - L 550)</option>
-            <option value="Pet Tag">04 — Pet Tag (L 250 - L 400)</option>
-            <option value="Smart Key">05 — Smart Key (L 180 - L 380)</option>
-            <option value="Emergency Tag">06 — Emergency Tag (L 250 - L 350)</option>
-            <option value="Business Starter Kit">Business Starter Kit (L 1,200)</option>
-            <option value="Business Review Kit">Business Review Kit (L 650)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Precio Total Acordado (L):</label>
-          <input type="number" class="form-control" id="new-order-price" value="650">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Notas de Configuración / Enlace a Grabar:</label>
-          <textarea class="form-control" id="new-order-notes" rows="2" placeholder="Enlace a programar, textos o requerimientos"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeNewOrderModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="createNewOrder(event)">Crear Pedido</button>
-      </div>
-    </div>
-  </div>
+    let inventory = [
+      { name: 'Chips NFC NTAG213', stock: 240, cost: 8 },
+      { name: 'Chips NFC NTAG215', stock: 110, cost: 12 },
+      { name: 'Tarjetas PVC Mate', stock: 65, cost: 35 },
+      { name: 'Stands Acrílicos Review', stock: 48, cost: 80 },
+      { name: 'Placas Metálicas Pet Tag', stock: 85, cost: 40 }
+    ];
 
-  <script src="/js/crm.js"></script>
+    // Auth
+    function checkAuth() {
+      if (sessionStorage.getItem('auth') === 'ok') {
+        document.getElementById('lock-screen').classList.add('unlocked');
+      }
+    }
+
+    const digits = document.querySelectorAll('.pin-digit');
+    digits.forEach((d, i) => {
+      d.addEventListener('input', (e) => {
+        if (e.target.value) {
+          if (i < digits.length - 1) digits[i+1].focus();
+          else verifyPin();
+        }
+      });
+    });
+
+    function verifyPin() {
+      let pin = '';
+      digits.forEach(d => pin += d.value);
+      if (pin === '1234') {
+        sessionStorage.setItem('auth', 'ok');
+        document.getElementById('lock-screen').classList.add('unlocked');
+        document.getElementById('pin-error').style.display = 'none';
+      } else {
+        document.getElementById('pin-error').style.display = 'block';
+        digits.forEach(d => d.value = '');
+        digits[0].focus();
+      }
+    }
+
+    function lockApp() {
+      sessionStorage.removeItem('auth');
+      document.getElementById('lock-screen').classList.remove('unlocked');
+      digits[0].focus();
+    }
+
+    // Tabs
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Render Tables
+    function renderTables() {
+      // Dash
+      document.getElementById('dash-orders-tbody').innerHTML = orders.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.client}</td>
+          <td>${o.product}</td>
+          <td><strong>L ${o.total}</strong></td>
+          <td><span class="pill pill-${o.status === 'done' ? 'done' : (o.status === 'prod' ? 'prod' : 'new')}">${o.status}</span></td>
+        </tr>
+      `).join('');
+
+      // All Orders
+      document.getElementById('all-orders-tbody').innerHTML = orders.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.client}</td>
+          <td>${o.product}</td>
+          <td><strong>L ${o.total}</strong></td>
+          <td><span class="pill pill-${o.status === 'done' ? 'done' : (o.status === 'prod' ? 'prod' : 'new')}">${o.status}</span></td>
+          <td><a href="https://wa.me/${o.phone}" target="_blank" style="color:#25D366; font-weight:700;">WhatsApp 💬</a></td>
+        </tr>
+      `).join('');
+
+      // Customers
+      document.getElementById('cust-tbody').innerHTML = orders.map((o, idx) => `
+        <tr>
+          <td>CUST-0${idx+1}</td>
+          <td><strong>${o.client}</strong></td>
+          <td>${o.total > 600 ? 'B2B Empresa' : 'B2C Personal'}</td>
+          <td>${o.phone}</td>
+          <td><strong>L ${o.total}</strong></td>
+        </tr>
+      `).join('');
+
+      // Inventory
+      document.getElementById('inv-tbody').innerHTML = inventory.map((inv, idx) => `
+        <tr>
+          <td><strong>${inv.name}</strong></td>
+          <td><strong style="color:${inv.stock < 50 ? '#EF4444' : '#10B981'}">${inv.stock} u.</strong></td>
+          <td>L ${inv.cost}</td>
+          <td>
+            <button onclick="adjInv(${idx}, 10)" class="btn btn-outline" style="padding:4px 8px;">+10</button>
+            <button onclick="adjInv(${idx}, -10)" class="btn btn-outline" style="padding:4px 8px;">-10</button>
+          </td>
+        </tr>
+      `).join('');
+
+      // Kanban
+      renderKanban();
+    }
+
+    function adjInv(idx, delta) {
+      inventory[idx].stock = Math.max(0, inventory[idx].stock + delta);
+      renderTables();
+    }
+
+    function renderKanban() {
+      const cols = {
+        new: 'Nuevos',
+        design: 'Diseño',
+        prod: 'Grabado NFC',
+        shipping: 'En Envío',
+        done: 'Entregados'
+      };
+
+      document.getElementById('kanban-board').innerHTML = Object.keys(cols).map(k => `
+        <div class="kanban-col">
+          <div style="font-weight:700; font-size:13px; text-transform:uppercase;">${cols[k]}</div>
+          ${orders.filter(o => o.status === k).map(o => `
+            <div class="order-card" onclick="advanceOrder('${o.id}')">
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--copper-signal); font-weight:700;">
+                <span>${o.id}</span>
+                <span>L ${o.total}</span>
+              </div>
+              <div style="font-weight:700; font-size:14px; margin:4px 0;">${o.client}</div>
+              <div style="font-size:12px; color:var(--slate-text);">${o.product}</div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    }
+
+    function advanceOrder(id) {
+      const o = orders.find(x => x.id === id);
+      const states = ['new', 'design', 'prod', 'shipping', 'done'];
+      let idx = states.indexOf(o.status);
+      o.status = states[(idx + 1) % states.length];
+      renderTables();
+    }
+
+    function newOrderPrompt() {
+      const name = prompt('Nombre del cliente o negocio:');
+      if (!name) return;
+      const total = prompt('Total en Lempiras (L):', '650');
+      orders.unshift({
+        id: `TL-${orders.length + 1083}`,
+        client: name,
+        phone: '50499999999',
+        product: 'Review TAP Stand',
+        total: Number(total) || 650,
+        status: 'new',
+        date: new Date().toISOString().split('T')[0]
+      });
+      renderTables();
+    }
+
+    function genQR() {
+      const val = encodeURIComponent(document.getElementById('nfc-url').value);
+      document.getElementById('qr-output').innerHTML = `
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${val}&color=17-1A-1F&bgcolor=FAF8F5" style="border-radius:8px; box-shadow:var(--shadow-md);">
+      `;
+    }
+
+    checkAuth();
+    renderTables();
+    genQR();
+  </script>
 </body>
 </html>
